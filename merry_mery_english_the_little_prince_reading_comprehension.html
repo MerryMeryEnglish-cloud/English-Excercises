@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Mery English - Level A2 Reading Comprehension: The Little Prince</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#00A896',
+                            tealDark: '#008072',
+                            tealLight: '#E6F6F4',
+                            navy: '#0F2557',
+                            navyDark: '#0A193D',
+                            yellow: '#FFB703',
+                            yellowDark: '#E0A000',
+                            rose: '#E63946',
+                            bg: '#F8FAFC'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Fredoka', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F8FAFC;
+        }
+        .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .shadow-custom {
+            box-shadow: 0 10px 25px -5px rgba(0, 168, 150, 0.12), 0 8px 10px -6px rgba(0, 168, 150, 0.08);
+        }
+        .animated-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .animated-card:hover {
+            transform: translateY(-2px);
+        }
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .tab-active {
+            background-color: #00A896 !important;
+            color: #ffffff !important;
+            border-color: #00A896 !important;
+            box-shadow: 0 4px 12px rgba(0, 168, 150, 0.25);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .vocab-highlight {
+            background-color: #E6F6F4;
+            color: #008072;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-weight: 700;
+            border-bottom: 2px solid #00A896;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .vocab-highlight:hover {
+            background-color: #00A896;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Brand Banner with Logo -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <!-- Custom SVG & Image Brand Logo -->
+                <div class="relative w-14 h-14 rounded-full border-2 border-brand-teal p-0.5 bg-white shadow-md flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    <img src="ChatGPT Image 13 sept 2026, 05_24_14 p.m._4.png" 
+                         alt="Merry Mery English Logo" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                         class="w-full h-full object-contain rounded-full">
+                    
+                    <!-- SVG Fallback Logo -->
+                    <div class="w-full h-full rounded-full bg-white flex-col items-center justify-center p-1 text-center hidden">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <circle cx="50" cy="50" r="46" fill="none" stroke="#00A896" stroke-width="4"/>
+                            <path d="M 14 36 L 22 39 M 11 48 L 20 48 M 16 59 L 23 55" stroke="#FFB703" stroke-width="2.5" stroke-linecap="round"/>
+                            <text x="44" y="32" font-family="Fredoka, sans-serif" font-weight="bold" font-size="13" fill="#0F2557" text-anchor="middle">Merry</text>
+                            <text x="42" y="48" font-family="Fredoka, sans-serif" font-weight="bold" font-size="13" fill="#0F2557" text-anchor="middle">Mery</text>
+                            <text x="48" y="66" font-family="Fredoka, sans-serif" font-weight="bold" font-size="15" fill="#00A896" text-anchor="middle">English</text>
+                            <g transform="translate(66, 35) scale(0.65)">
+                                <circle cx="15" cy="15" r="13" fill="#FFB703"/>
+                                <circle cx="10" cy="11" r="1.5" fill="#0F2557"/>
+                                <circle cx="20" cy="11" r="1.5" fill="#0F2557"/>
+                                <path d="M 9 17 Q 15 23 21 17" fill="none" stroke="#0F2557" stroke-width="2" stroke-linecap="round"/>
+                            </g>
+                            <path d="M 32 72 Q 52 79 74 72" fill="none" stroke="#FFB703" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div>
+                    <h1 class="font-heading text-xl sm:text-2xl font-bold text-brand-navy tracking-tight flex items-center gap-2">
+                        Merry Mery English
+                        <span class="text-[11px] font-body font-semibold px-2.5 py-0.5 rounded-full bg-teal-100 text-brand-tealDark border border-teal-200 hidden sm:inline-block">Level A2 Reading</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 font-medium">The Little Prince & The Fox <span class="text-brand-teal font-bold">— Classic Literature Masterclass</span></p>
+                </div>
+            </div>
+
+            <!-- Cambridge Dictionary Modal Button & Score Badge -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="toggleDictionaryModal()" class="flex items-center gap-1.5 bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-sm group" title="Open Cambridge Dictionary Helper">
+                    <i class="fa-solid fa-book-bookmark text-sky-600 group-hover:scale-110 transition-transform"></i>
+                    <span class="hidden sm:inline">Cambridge Dictionary</span>
+                    <i class="fa-solid fa-magnifying-glass text-[10px] text-sky-500"></i>
+                </button>
+
+                <div id="header-score" class="flex items-center gap-2 sm:gap-3 bg-slate-50 px-3.5 py-1.5 rounded-xl border border-slate-200">
+                    <div class="text-right">
+                        <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Progress</div>
+                        <div class="text-xs sm:text-sm font-bold text-brand-navy" id="progress-text">0 / 6 Questions</div>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center font-bold text-xs">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs (Solapas) -->
+        <div class="bg-slate-50/80 border-t border-slate-200/80">
+            <div class="max-w-6xl mx-auto px-4 flex items-center overflow-x-auto no-scrollbar gap-2 py-2 text-xs font-bold">
+                <button id="tab-btn-text" onclick="switchTab('text')" class="tab-btn tab-active px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-2 flex-shrink-0">
+                    <i class="fa-solid fa-book-open text-brand-teal"></i>
+                    <span>Reading Text</span>
+                </button>
+                <button id="tab-btn-quiz" onclick="switchTab('quiz')" class="tab-btn px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-2 flex-shrink-0">
+                    <i class="fa-solid fa-circle-question text-amber-500"></i>
+                    <span>Comprehension Questions</span>
+                    <span id="badge-quiz" class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 text-[10px] flex items-center justify-center font-bold">0/6</span>
+                </button>
+                <button id="tab-btn-vocab" onclick="switchTab('vocab')" class="tab-btn px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-2 flex-shrink-0">
+                    <i class="fa-solid fa-spell-check text-purple-600"></i>
+                    <span>Key Expressions</span>
+                </button>
+                <button id="tab-btn-summary" onclick="switchTab('summary')" class="tab-btn px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 transition-all flex items-center gap-2 flex-shrink-0">
+                    <i class="fa-solid fa-award text-brand-yellowDark"></i>
+                    <span>Summary & Score</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow">
+
+        <!-- TAB 1: READING TEXT OVERVIEW -->
+        <div id="tab-content-text" class="tab-content space-y-6">
+            
+            <!-- Citation Header Card -->
+            <section class="bg-gradient-to-br from-brand-navy via-slate-900 to-brand-navyDark rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-brand-teal/20 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-teal/20 text-brand-teal border border-brand-teal/30 text-xs font-bold uppercase tracking-wider">
+                            <i class="fa-solid fa-feather-pointed"></i> Reading Text Passage
+                        </div>
+                        <h2 class="font-heading text-2xl sm:text-3xl font-bold tracking-wide text-white">
+                            Excerpt from: <span class="text-brand-yellow">The Little Prince (Le Petit Prince)</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-300 font-medium">
+                            By Antoine de Saint-Exupéry • <span class="text-teal-300 font-semibold">Chapter XXI (Adapted for Level A2)</span>
+                        </p>
+                        <blockquote class="text-xs italic text-slate-400 border-l-2 border-brand-yellow pl-3 my-2">
+                            "Once, the Little Prince met a wild fox in the desert..."
+                        </blockquote>
+                    </div>
+
+                    <!-- Audio Controls for Full Text -->
+                    <div class="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 flex flex-col items-center gap-3 flex-shrink-0 text-center sm:min-w-[220px]">
+                        <button onclick="readFullText(this)" id="btn-read-full" class="w-full bg-brand-teal hover:bg-brand-tealDark text-white px-5 py-3 rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 group">
+                            <i class="fa-solid fa-circle-play text-base group-hover:scale-110 transition-transform"></i>
+                            <span>Listen to Full Passage</span>
+                        </button>
+                        <span class="text-[10px] text-slate-300 flex items-center gap-1">
+                            <i class="fa-solid fa-headphones text-teal-300"></i> Clear Audio Pronunciation
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Adapted Reading Text Content (Continuous prose without highlights) -->
+            <section class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-custom space-y-6">
+                <div class="flex flex-wrap items-center justify-between border-b border-slate-100 pb-4 gap-3">
+                    <h3 class="font-heading text-xl font-bold text-brand-navy flex items-center gap-2">
+                        <i class="fa-solid fa-book-open text-brand-teal"></i>
+                        Adapted Passage (160 Words)
+                    </h3>
+                    
+                    <button onclick="toggleDictionaryModal()" class="text-xs bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 px-3.5 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-book-bookmark text-sky-600"></i>
+                        <span>Need a dictionary? Click to search any word</span>
+                    </button>
+                </div>
+
+                <!-- Smooth Continuous Story Text -->
+                <div id="story-passage" class="space-y-4 text-slate-700 text-base sm:text-lg leading-relaxed font-body bg-slate-50/60 p-6 sm:p-8 rounded-2xl border border-slate-100">
+                    <p>
+                        Once, the Little Prince met a wild fox in the desert. "Come and play with me," said the prince. "I am very sad."
+                    </p>
+                    <p>
+                        "I cannot play with you," said the fox. "I am not tamed."
+                    </p>
+                    <p>
+                        "What does 'tamed' mean?" asked the prince.
+                    </p>
+                    <p>
+                        "It means to create bonds," explained the fox. "To me, you are just a little boy like a hundred thousand other little boys. And I do not need you. But if you tame me, we will need each other. You will be unique in the world to me."
+                    </p>
+                    <p>
+                        The prince thought about his rose on his small planet. "I think a flower tamed me," he said softly.
+                    </p>
+                    <p>
+                        The fox smiled and said: "Here is my secret. It is very simple: You can only see well with the heart. What is essential is invisible to the eyes. It is the time you spent with your rose that makes her so important."
+                    </p>
+                </div>
+
+                <div class="pt-4 text-center">
+                    <button onclick="switchTab('quiz')" class="bg-brand-teal hover:bg-brand-tealDark text-white font-bold px-8 py-3.5 rounded-2xl transition-all shadow-lg hover:shadow-teal-500/30 inline-flex items-center gap-2 text-sm">
+                        <span>Go to Comprehension Questions</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: COMPREHENSION QUESTIONS (6 QUESTIONS) -->
+        <div id="tab-content-quiz" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-custom">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <h2 class="font-heading text-2xl font-bold text-brand-navy mt-1">Comprehension Questions</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Choose the correct answer. Press "Listen" on any question to hear it aloud!</p>
+                    </div>
+                    <div class="text-right">
+                        <span id="quiz-completion-badge" class="text-xs font-bold px-3 py-1 bg-slate-100 text-slate-600 rounded-full">0 / 6 Completed</span>
+                    </div>
+                </div>
+
+                <!-- Questions Container injected via JS -->
+                <div id="quiz-container" class="space-y-6"></div>
+
+                <!-- Success Banner (hidden until all 6 complete) -->
+                <div id="quiz-success-banner" class="hidden mt-8 p-6 bg-emerald-50 border-2 border-emerald-300 rounded-2xl text-center space-y-3">
+                    <div class="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xl mx-auto shadow-md">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-emerald-900">All Questions Completed! Excellent Work!</h3>
+                    <p id="quiz-success-msg" class="text-xs text-emerald-800 max-w-md mx-auto"></p>
+                    <div class="flex justify-center gap-3">
+                        <button onclick="switchTab('vocab')" class="bg-brand-teal hover:bg-brand-tealDark text-white font-bold px-6 py-2.5 rounded-xl transition-all shadow text-xs inline-flex items-center gap-2">
+                            <span>Explore Key Expressions</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: KEY VOCABULARY & EXPRESSIONS -->
+        <div id="tab-content-vocab" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-custom">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="font-heading text-2xl font-bold text-brand-navy mt-1">Key Expressions & Vocabulary</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Review key words and listen to their clear pronunciation.</p>
+                    </div>
+                    <button onclick="toggleDictionaryModal()" class="text-xs bg-sky-50 text-sky-800 border border-sky-200 px-3 py-1.5 rounded-xl font-bold hover:bg-sky-100 flex items-center gap-1.5">
+                        <i class="fa-solid fa-book text-sky-600"></i> Open Dictionary Search
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="vocab-cards-grid">
+                    <!-- Cards injected by JS -->
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="switchTab('summary')" class="bg-brand-navy hover:bg-slate-800 text-white font-bold px-8 py-3.5 rounded-2xl transition-all shadow-lg inline-flex items-center gap-2 text-sm">
+                        <span>View Final Score & Summary</span>
+                        <i class="fa-solid fa-award text-amber-400"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: SUMMARY & SCOREBOARD -->
+        <div id="tab-content-summary" class="tab-content hidden">
+            <section id="final-scoreboard" class="bg-white rounded-3xl p-8 border-2 border-brand-teal/30 shadow-2xl text-center">
+                <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center text-amber-500 text-3xl mx-auto mb-4 border-4 border-amber-200 shadow-inner">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <h2 id="final-title" class="font-heading text-3xl font-bold text-brand-navy">Reading Comprehension Summary</h2>
+                <p id="final-subtitle" class="text-slate-600 text-sm max-w-lg mx-auto mt-2">The Little Prince (Level A2) Performance Metrics</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl mx-auto my-6">
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="text-xs text-slate-400 font-bold uppercase">First-Try Accuracy</div>
+                        <div id="final-score" class="text-2xl font-bold text-brand-teal mt-1">0%</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="text-xs text-slate-400 font-bold uppercase">First-Try Correct</div>
+                        <div id="final-first-try" class="text-2xl font-bold text-brand-navy mt-1">0 / 6</div>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                        <div class="text-xs text-slate-400 font-bold uppercase">Total Attempt Clicks</div>
+                        <div id="final-attempts" class="text-2xl font-bold text-amber-600 mt-1">0</div>
+                    </div>
+                </div>
+
+                <div id="perseverance-feedback" class="p-4 rounded-2xl text-sm max-w-xl mx-auto mb-6 bg-slate-100 text-slate-700 border border-slate-200 font-medium">
+                    Answer all 6 comprehension questions in Solapa 2 to view your final evaluated grade!
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <button onclick="resetAllQuiz()" class="bg-brand-teal hover:bg-brand-tealDark text-white font-bold px-8 py-3 rounded-2xl transition-colors shadow-lg hover:shadow-teal-500/30 inline-flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-rotate-right"></i> Restart Comprehension Quiz
+                    </button>
+                    <button onclick="fireConfetti()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3 rounded-2xl transition-colors shadow-lg inline-flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-sparkles"></i> Celebrate!
+                    </button>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Cambridge Dictionary Slide-Over Modal -->
+    <div id="dict-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 relative animate-fadeIn">
+            <button onclick="toggleDictionaryModal()" class="absolute top-4 right-4 w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-600 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center text-lg font-bold">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <div>
+                    <h3 class="font-heading text-xl font-bold text-brand-navy">Cambridge Dictionary Companion</h3>
+                    <p class="text-xs text-slate-500">Look up any word from The Little Prince text</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex gap-2">
+                    <input type="text" id="dict-search-input" placeholder="Type a word (e.g. tame, essential, bond)..." class="flex-grow px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-brand-teal outline-none">
+                    <button onclick="searchCambridge()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-magnifying-glass"></i> Look Up
+                    </button>
+                </div>
+
+                <div id="dict-quick-results" class="p-4 bg-sky-50 rounded-2xl border border-sky-100 text-xs space-y-2">
+                    <p class="font-bold text-sky-900">Recommended Key Vocabulary from Text:</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="quickSearchWord('tame')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">tame</button>
+                        <button onclick="quickSearchWord('bond')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">bond</button>
+                        <button onclick="quickSearchWord('unique')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">unique</button>
+                        <button onclick="quickSearchWord('essential')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">essential</button>
+                        <button onclick="quickSearchWord('invisible')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">invisible</button>
+                    </div>
+                </div>
+
+                <div class="text-center pt-2">
+                    <a id="dict-external-link" href="https://dictionary.cambridge.org/dictionary/" target="_blank" rel="noopener noreferrer" class="text-xs text-sky-700 hover:underline font-bold inline-flex items-center gap-1">
+                        <span>Open directly on Cambridge Dictionary Website</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full border border-brand-teal/40 overflow-hidden bg-white p-0.5 flex-shrink-0">
+                    <img src="ChatGPT Image 13 sept 2026, 05_24_14 p.m._4.png" 
+                         alt="Merry Mery English Logo" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/00A896/ffffff?text=MM';"
+                         class="w-full h-full object-cover rounded-full">
+                </div>
+                <span>© Merry Mery English — Level A2 Literature Series</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-400">
+                <span class="text-slate-600 font-semibold"><i class="fa-solid fa-headphones text-sky-500"></i> Interactive Speech Audio</span>
+                <span>•</span>
+                <span class="text-slate-600 font-semibold"><i class="fa-solid fa-lightbulb text-amber-500"></i> Guided Reading Hints</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // State tracking
+        const state = {
+            totalQuestions: 6,
+            completedQuestions: new Set(),
+            answeredCorrectly: {}, // qId -> boolean
+            correctAnswersText: {}, // qId -> string
+            attempts: {}, // questionId -> total clicks
+            firstTryCorrect: 0
+        };
+
+        // Complete 6 Questions Dataset
+        const quizQuestions = [
+            {
+                id: 'q1',
+                num: 1,
+                question: "Why did the fox say he couldn't play with the Little Prince at first?",
+                options: [
+                    { key: 'A', text: "Because he was too tired and hungry.", correct: false, explanation: "Incorrect. The fox didn't mention tiredness or hunger." },
+                    { key: 'B', text: "Because he was not tamed yet.", correct: true, explanation: "Spot on! The fox explained: 'I cannot play with you. I am not tamed.'" },
+                    { key: 'C', text: "Because he didn't like little boys.", correct: false, explanation: "Incorrect. The fox said he just didn't know the prince yet." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Check paragraph 2 where the fox answers the prince."
+            },
+            {
+                id: 'q2',
+                num: 2,
+                question: "According to the fox, what does the word \"tamed\" mean?",
+                options: [
+                    { key: 'A', text: "To train an animal to do tricks.", correct: false, explanation: "Incorrect. That is a circus definition, not the fox's definition!" },
+                    { key: 'B', text: "To build a strong connection or bond with someone.", correct: true, explanation: "Brilliant! The fox states: 'It means to create bonds.'" },
+                    { key: 'C', text: "To capture an animal in the desert.", correct: false, explanation: "Incorrect. Taming is about friendship, not capturing." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Check paragraph 4 where the fox explains: \"It means to...\""
+            },
+            {
+                id: 'q3',
+                num: 3,
+                question: "What happens if two individuals tame each other?",
+                options: [
+                    { key: 'A', text: "They will become necessary to each other and special.", correct: true, explanation: "Exactly right! 'We will need each other. You will be unique in the world to me.'" },
+                    { key: 'B', text: "They will forget about all other animals and people.", correct: false, explanation: "Incorrect. They become unique, but don't forget others." },
+                    { key: 'C', text: "They will stay together in the desert forever.", correct: false, explanation: "Incorrect. The story doesn't say they must stay in the desert." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Check paragraph 4: \"But if you tame me, we will...\""
+            },
+            {
+                id: 'q4',
+                num: 4,
+                question: "When the fox explained the meaning of \"tamed\", who did the prince remember?",
+                options: [
+                    { key: 'A', text: "A king from another planet.", correct: false, explanation: "Incorrect. The king did not tame him." },
+                    { key: 'B', text: "His wild fox in the desert.", correct: false, explanation: "Incorrect. He was talking to the fox right then!" },
+                    { key: 'C', text: "His rose on his home planet.", correct: true, explanation: "Splendid! The prince realized softly: 'I think a flower tamed me.'" },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Look at paragraph 5 where the prince mentions his rose."
+            },
+            {
+                id: 'q5',
+                num: 5,
+                question: "What is the fox's main secret?",
+                options: [
+                    { key: 'A', text: "Roses are the most beautiful flowers in the universe.", correct: false, explanation: "Incorrect. The secret is deeper than just visual beauty." },
+                    { key: 'B', text: "You can only see truly important things with your heart, not your eyes.", correct: true, explanation: "Beautiful! 'What is essential is invisible to the eyes.'" },
+                    { key: 'C', text: "The desert is the best place to make new friends.", correct: false, explanation: "Incorrect. That is not the fox's secret." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Check paragraph 6 where the fox says: \"Here is my secret...\""
+            },
+            {
+                id: 'q6',
+                num: 6,
+                question: "Why was the prince's rose so special to him?",
+                options: [
+                    { key: 'A', text: "Because it was the only rose in the entire universe.", correct: false, explanation: "Incorrect. He saw thousands of roses, but HIS was special because of his time." },
+                    { key: 'B', text: "Because the fox gave it to him as a gift.", correct: false, explanation: "Incorrect. The fox didn't give him the rose." },
+                    { key: 'C', text: "Because of the time and care he invested in her.", correct: true, explanation: "Outstanding! 'It is the time you spent with your rose that makes her so important.'" },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Read the very last sentence of the passage."
+            }
+        ];
+
+        // Vocabulary dataset for Key Expressions
+        const vocabData = [
+            {
+                word: "Wild",
+                pos: "adjective",
+                definition: "Living in a natural state; not tamed or domesticated.",
+                example: "The Little Prince met a wild fox in the desert.",
+                audioText: "Wild. The Little Prince met a wild fox in the desert."
+            },
+            {
+                word: "Tamed",
+                pos: "verb / adjective",
+                definition: "To establish a close relationship or connection; to make gentle.",
+                example: "I cannot play with you. I am not tamed.",
+                audioText: "Tamed. I cannot play with you. I am not tamed."
+            },
+            {
+                word: "Bonds",
+                pos: "noun (plural)",
+                definition: "Connections or ties of affection, friendship, or shared feeling.",
+                example: "It means to create bonds with someone.",
+                audioText: "Bonds. It means to create bonds with someone."
+            },
+            {
+                word: "Unique",
+                pos: "adjective",
+                definition: "Being the only one of its kind; special and unlike anything else.",
+                example: "If you tame me, you will be unique in the world to me.",
+                audioText: "Unique. If you tame me, you will be unique in the world to me."
+            },
+            {
+                word: "Essential",
+                pos: "adjective",
+                definition: "Extremely important or necessary; the fundamental nature of something.",
+                example: "What is essential is invisible to the eyes.",
+                audioText: "Essential. What is essential is invisible to the eyes."
+            },
+            {
+                word: "Invisible",
+                pos: "adjective",
+                definition: "Impossible to see with physical eyes.",
+                example: "You can only see well with the heart; essential things are invisible.",
+                audioText: "Invisible. You can only see well with the heart; essential things are invisible."
+            }
+        ];
+
+        // Web Speech API helper
+        function speakAudio(text, onEndCallback) {
+            if (!('speechSynthesis' in window)) {
+                if (onEndCallback) onEndCallback();
+                return;
+            }
+
+            window.speechSynthesis.cancel(); // Reset previous audio
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.88; // Comfortable speed for level A2 learners
+            utterance.pitch = 0.95; 
+
+            const voices = window.speechSynthesis.getVoices();
+            
+            // Preference order for natural British/English voice
+            const preferredVoice = voices.find(v => 
+                (v.lang === 'en-GB' || v.lang.startsWith('en-GB') || v.lang.includes('en_GB')) &&
+                (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('george') || v.name.toLowerCase().includes('oliver') || v.name.toLowerCase().includes('brian') || v.name.toLowerCase().includes('daniel'))
+            ) || voices.find(v => v.lang === 'en-GB' || v.lang.startsWith('en-GB')) || voices.find(v => v.lang.startsWith('en'));
+
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+            } else {
+                utterance.lang = 'en-GB';
+            }
+
+            if (onEndCallback) utterance.onend = onEndCallback;
+            utterance.onerror = () => { if (onEndCallback) onEndCallback(); };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function readFullText(btn) {
+            const fullStory = "Once, the Little Prince met a wild fox in the desert. Come and play with me, said the prince. I am very sad. I cannot play with you, said the fox. I am not tamed. What does tamed mean? asked the prince. It means to create bonds, explained the fox. To me, you are just a little boy like a hundred thousand other little boys. And I do not need you. But if you tame me, we will need each other. You will be unique in the world to me. The prince thought about his rose on his small planet. I think a flower tamed me, he said softly. The fox smiled and said: Here is my secret. It is very simple: You can only see well with the heart. What is essential is invisible to the eyes. It is the time you spent with your rose that makes her so important.";
+            
+            const origHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-base"></i> <span>Reading Passage...</span>`;
+            
+            speakAudio(fullStory, () => {
+                btn.innerHTML = origHTML;
+            });
+        }
+
+        // Render Quiz Cards
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = quizQuestions.map((q) => {
+                const correctOpt = q.options.find(o => o.correct);
+                if (correctOpt) {
+                    state.correctAnswersText[q.id] = correctOpt.text;
+                }
+
+                return `
+                <div id="${q.id}-card" class="bg-slate-50 border border-slate-200 rounded-2xl p-5 animated-card relative">
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-full bg-brand-teal text-white flex items-center justify-center font-bold text-xs">Q${q.num}</span>
+                            <span class="text-xs font-semibold text-slate-400 uppercase">Question ${q.num} of 6</span>
+                        </div>
+                        <button id="${q.id}-listen-btn" onclick="listenQuestion('${q.id}', this)" class="text-xs bg-white hover:bg-brand-teal hover:text-white text-brand-teal border border-slate-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-bold transition-all shadow-sm">
+                            <i class="fa-solid fa-volume-high"></i> Listen
+                        </button>
+                    </div>
+
+                    <h4 class="font-semibold text-slate-800 text-base mb-4">${q.question}</h4>
+
+                    <!-- Hint Drawer for I Don't Know -->
+                    <div id="${q.id}-hint" class="hidden mb-4 p-3.5 bg-amber-50 border-2 border-amber-300 rounded-xl text-xs text-amber-900 animate-fadeIn">
+                        <div class="flex items-center gap-2 font-bold text-amber-800 mb-1">
+                            <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
+                            <span>Text Guidance Hint:</span>
+                        </div>
+                        <p class="text-amber-900">${q.hint}</p>
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div class="space-y-2.5" id="${q.id}-options">
+                        ${q.options.map((opt, oIdx) => `
+                            <button onclick="handleOptionSelect('${q.id}', ${oIdx})"
+                                    id="${q.id}-opt-${oIdx}"
+                                    class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-white hover:border-brand-teal hover:bg-teal-50/40 font-medium text-slate-700 text-xs sm:text-sm transition-all flex items-start gap-3 group">
+                                <span class="w-6 h-6 rounded-lg ${opt.isIDontKnow ? 'bg-amber-100 text-amber-700 font-bold' : 'bg-slate-100 text-slate-500 group-hover:bg-brand-teal group-hover:text-white'} flex items-center justify-center text-xs flex-shrink-0 mt-0.5 transition-colors font-bold">
+                                    ${opt.key}
+                                </span>
+                                <span class="flex-grow ${opt.isIDontKnow ? 'text-amber-800 font-bold italic' : ''}">${opt.text}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="${q.id}-feedback" class="hidden mt-3 p-3.5 rounded-xl text-xs font-medium transition-all"></div>
+                </div>
+            `}).join('');
+        }
+
+        // Question Listen audio logic:
+        // Reads question ONLY before answering.
+        // Reads question AND correct answer after answered correctly!
+        function listenQuestion(qId, btn) {
+            const q = quizQuestions.find(item => item.id === qId);
+            if (!q) return;
+
+            let speechText = q.question;
+            if (state.answeredCorrectly[qId] && state.correctAnswersText[qId]) {
+                speechText = `Question: ${q.question}. Correct Answer: ${state.correctAnswersText[qId]}`;
+            }
+
+            const origHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-xs"></i> Listening`;
+            speakAudio(speechText, () => {
+                btn.innerHTML = origHTML;
+            });
+        }
+
+        function handleOptionSelect(qId, selectedIdx) {
+            // Track attempt count
+            state.attempts[qId] = (state.attempts[qId] || 0) + 1;
+
+            const q = quizQuestions.find(item => item.id === qId);
+            const selectedOpt = q.options[selectedIdx];
+            const feedbackEl = document.getElementById(`${qId}-feedback`);
+            const hintEl = document.getElementById(`${qId}-hint`);
+
+            feedbackEl.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'border-red-200', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-amber-50', 'text-amber-900', 'border-amber-200');
+
+            // Handle "I don't know" selection
+            if (selectedOpt.isIDontKnow) {
+                hintEl.classList.remove('hidden');
+                feedbackEl.classList.add('bg-amber-50', 'text-amber-900', 'border', 'border-amber-200');
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-info text-amber-600 mr-1.5 text-sm"></i> <strong>No problem!</strong> Read the yellow hint box above, check the passage in the Reading Text tab, and try options A, B, or C!`;
+                return;
+            }
+
+            if (selectedOpt.correct) {
+                state.answeredCorrectly[qId] = true;
+                feedbackEl.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1.5 text-sm"></i> <strong>Correct!</strong> ${selectedOpt.explanation} <br><span class="inline-block mt-1.5 text-[11px] text-emerald-700"><i class="fa-solid fa-volume-high text-emerald-600"></i> Press "Listen" above to hear the question and correct answer together!</span>`;
+
+                // Disable options
+                q.options.forEach((_, idx) => {
+                    const btn = document.getElementById(`${qId}-opt-${idx}`);
+                    btn.disabled = true;
+                    if (idx === selectedIdx) {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold text-xs sm:text-sm flex items-start gap-3";
+                    } else {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-100 text-slate-400 font-normal text-xs sm:text-sm flex items-start gap-3 opacity-40";
+                    }
+                });
+
+                if (!state.completedQuestions.has(qId)) {
+                    state.completedQuestions.add(qId);
+                    if (state.attempts[qId] === 1) state.firstTryCorrect++;
+                    updateQuizProgress();
+                }
+            } else {
+                feedbackEl.classList.add('bg-red-50', 'text-red-700', 'border', 'border-red-200');
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-red-500 mr-1.5 text-sm"></i> <strong>Not quite!</strong> ${selectedOpt.explanation} <br><span class="inline-block mt-1 text-amber-800 font-semibold"><i class="fa-solid fa-lightbulb text-amber-500"></i> Hint: ${q.hint}</span>`;
+
+                hintEl.classList.remove('hidden');
+
+                const card = document.getElementById(`${qId}-card`);
+                card.classList.add('shake');
+                setTimeout(() => card.classList.remove('shake'), 500);
+
+                const wrongBtn = document.getElementById(`${qId}-opt-${selectedIdx}`);
+                wrongBtn.className = "w-full text-left p-3.5 rounded-xl border-2 border-red-300 bg-red-50 text-red-700 font-medium text-xs sm:text-sm flex items-start gap-3 opacity-80";
+            }
+        }
+
+        function renderVocabCards() {
+            const grid = document.getElementById('vocab-cards-grid');
+            grid.innerHTML = vocabData.map((item) => `
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 animated-card flex flex-col justify-between hover:border-brand-teal hover:bg-white">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-heading font-bold text-lg text-brand-navy">${item.word}</h3>
+                                <span class="text-[10px] uppercase font-mono text-brand-teal bg-teal-50 px-2 py-0.5 rounded border border-teal-100 font-semibold">${item.pos}</span>
+                            </div>
+                            <button onclick="readVocabItem('${item.audioText.replace(/'/g, "\\'")}', this)" class="w-8 h-8 rounded-full bg-white hover:bg-brand-teal hover:text-white text-brand-teal border border-slate-200 flex items-center justify-center transition-colors shadow-sm" title="Listen to pronunciation">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-3">${item.definition}</p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-200/60 text-xs italic text-slate-700 bg-white p-2.5 rounded-xl border border-slate-100">
+                        "${item.example}"
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function readVocabItem(text, btn) {
+            const origHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-xs"></i>`;
+            speakAudio(text, () => {
+                btn.innerHTML = origHTML;
+            });
+        }
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            const tabs = ['text', 'quiz', 'vocab', 'summary'];
+            tabs.forEach(id => {
+                const content = document.getElementById(`tab-content-${id}`);
+                const btn = document.getElementById(`tab-btn-${id}`);
+                if (content) content.classList.add('hidden');
+                if (btn) btn.classList.remove('tab-active');
+            });
+
+            const activeContent = document.getElementById(`tab-content-${tabId}`);
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+            if (activeBtn) activeBtn.classList.add('tab-active');
+
+            if (tabId === 'summary') {
+                updateScoreboard();
+            }
+        }
+
+        // Cambridge Dictionary Modal Functions
+        function toggleDictionaryModal() {
+            const modal = document.getElementById('dict-modal');
+            if (modal) modal.classList.toggle('hidden');
+        }
+
+        function searchCambridge() {
+            const input = document.getElementById('dict-search-input');
+            const query = input ? input.value.trim() : '';
+            if (query) {
+                window.open(`https://dictionary.cambridge.org/dictionary/english/${encodeURIComponent(query)}`, '_blank');
+            }
+        }
+
+        function quickSearchWord(word) {
+            const input = document.getElementById('dict-search-input');
+            if (input) input.value = word;
+            window.open(`https://dictionary.cambridge.org/dictionary/english/${encodeURIComponent(word)}`, '_blank');
+        }
+
+        // Progress and Scoreboard Updates
+        function updateQuizProgress() {
+            const completedCount = state.completedQuestions.size;
+            document.getElementById('progress-text').innerText = `${completedCount} / 6 Questions`;
+            document.getElementById('badge-quiz').innerText = `${completedCount}/6`;
+            document.getElementById('quiz-completion-badge').innerText = `${completedCount} / 6 Completed`;
+
+            if (completedCount === state.totalQuestions) {
+                const banner = document.getElementById('quiz-success-banner');
+                const msg = document.getElementById('quiz-success-msg');
+                if (banner) banner.classList.remove('hidden');
+                if (msg) msg.innerText = `You scored ${state.firstTryCorrect} out of 6 on your first try!`;
+                fireConfetti();
+            }
+
+            updateScoreboard();
+        }
+
+        function updateScoreboard() {
+            const totalAttempts = Object.values(state.attempts).reduce((a, b) => a + b, 0);
+            const accuracy = Math.round((state.firstTryCorrect / state.totalQuestions) * 100) || 0;
+
+            const scoreEl = document.getElementById('final-score');
+            const firstTryEl = document.getElementById('final-first-try');
+            const attemptsEl = document.getElementById('final-attempts');
+            const feedbackEl = document.getElementById('perseverance-feedback');
+
+            if (scoreEl) scoreEl.innerText = `${accuracy}%`;
+            if (firstTryEl) firstTryEl.innerText = `${state.firstTryCorrect} / ${state.totalQuestions}`;
+            if (attemptsEl) attemptsEl.innerText = `${totalAttempts}`;
+
+            if (feedbackEl) {
+                if (state.completedQuestions.size < state.totalQuestions) {
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1"></i> Answer all 6 comprehension questions in the <strong>Comprehension Questions</strong> tab to complete your score! (${state.completedQuestions.size}/6 finished)`;
+                } else if (accuracy >= 80) {
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-star text-amber-500 mr-1"></i> <strong>Outstanding Performance!</strong> Excellent reading comprehension and focus on key literature details!`;
+                } else {
+                    feedbackEl.innerHTML = `<i class="fa-solid fa-thumbs-up text-brand-teal mr-1"></i> <strong>Good job!</strong> You completed all questions. Review the passage again to improve your score!`;
+                }
+            }
+        }
+
+        // Confetti Celebration
+        function fireConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        function resetAllQuiz() {
+            state.completedQuestions.clear();
+            state.answeredCorrectly = {};
+            state.attempts = {};
+            state.firstTryCorrect = 0;
+
+            document.getElementById('quiz-success-banner').classList.add('hidden');
+            document.getElementById('progress-text').innerText = `0 / 6 Questions`;
+            document.getElementById('badge-quiz').innerText = `0/6`;
+            document.getElementById('quiz-completion-badge').innerText = `0 / 6 Completed`;
+
+            renderQuiz();
+            updateScoreboard();
+            switchTab('text');
+        }
+
+        // Initialize voices and render content on window load
+        window.onload = function() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    window.speechSynthesis.getVoices();
+                };
+            }
+            renderQuiz();
+            renderVocabCards();
+            updateScoreboard();
+        };
+    </script>
+</body>
+</html>

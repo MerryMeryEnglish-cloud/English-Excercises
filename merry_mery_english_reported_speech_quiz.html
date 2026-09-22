@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merry Mery English - Reported Speech Master Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              teal: '#00BDA8',
+              'teal-dark': '#009686',
+              'teal-light': '#E6F8F6',
+              navy: '#0B2545',
+              'navy-dark': '#06182E',
+              'navy-light': '#183B6B',
+              yellow: '#FFBE1A',
+              'yellow-light': '#FFF8E6',
+              cream: '#F7FBFB'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F2F7F7;
+      color: #0B2545;
+    }
+    
+    @keyframes pulseCorrect {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    
+    @keyframes shakeWrong {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .animate-correct {
+      animation: pulseCorrect 0.35s ease-in-out;
+    }
+
+    .animate-wrong {
+      animation: shakeWrong 0.35s ease-in-out;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #e2e8f0;
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #00BDA8;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- Top Header with Logo Branding -->
+  <header class="border-b-2 border-brand-teal/20 bg-white sticky top-0 z-50 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+      
+      <!-- Logo Branding -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full border-4 border-brand-teal bg-white flex items-center justify-center shadow-sm relative group">
+          <div class="text-center font-extrabold leading-none text-brand-navy text-[10px] uppercase tracking-tighter">
+            <span class="block text-brand-navy font-black text-xs leading-none">MERRY</span>
+            <span class="block text-brand-teal font-extrabold text-[11px] leading-none">ENGLISH</span>
+          </div>
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-brand-yellow rounded-full border-2 border-white flex items-center justify-center text-brand-navy text-[10px] shadow-sm">
+            <i class="fa-solid fa-face-smile"></i>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="font-black text-xl text-brand-navy leading-none flex items-center gap-2">
+            <span>Merry Mery English</span>
+            <span class="text-brand-yellow text-sm">✨</span>
+          </h1>
+          <p class="text-xs font-semibold text-brand-teal-dark mt-0.5">Grammar Studio • Reported Speech Quiz</p>
+        </div>
+      </div>
+
+      <!-- Header Action Buttons -->
+      <div class="flex items-center gap-3">
+        <div class="bg-brand-cream border-2 border-brand-teal/30 px-4 py-2 rounded-2xl flex items-center gap-3 shadow-inner">
+          <span class="text-xs font-bold text-brand-navy-light uppercase tracking-wider">Score:</span>
+          <span id="score-counter" class="text-lg font-black text-brand-teal-dark">0 / 10</span>
+        </div>
+        <button id="sound-btn" onclick="toggleSound()" class="p-2.5 rounded-xl bg-brand-cream border-2 border-brand-teal/30 text-brand-navy hover:bg-brand-teal/10 transition shadow-sm" title="Toggle Sound">
+          <i id="sound-icon" class="fa-solid fa-volume-high text-brand-teal"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+    <!-- Instructions & Controls Panel -->
+    <div class="bg-white p-6 rounded-3xl border-2 border-brand-teal/30 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <span class="text-xs font-black uppercase tracking-wider text-brand-navy bg-brand-yellow px-3 py-1 rounded-full border border-brand-yellow/50 inline-flex items-center gap-1 shadow-sm">
+          <i class="fa-solid fa-comments text-brand-navy"></i> Grammar Focus: Reported Speech
+        </span>
+        <h2 class="text-2xl font-black text-brand-navy mt-2">Multiple Choice Challenge</h2>
+        <p class="text-slate-600 text-sm">Choose the correct reported speech transformation for each sentence. Tap the circular options to make your choice!</p>
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap w-full md:w-auto justify-end">
+        <button onclick="checkAnswers()" class="px-4 py-2.5 bg-brand-teal hover:bg-brand-teal-dark text-white text-sm font-bold rounded-2xl transition shadow-md flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-brand-yellow"></i> Check Answers
+        </button>
+        <button onclick="showAnswers()" class="px-4 py-2.5 bg-brand-navy-light hover:bg-brand-navy text-white text-sm font-bold rounded-2xl transition shadow-md flex items-center gap-2">
+          <i class="fa-solid fa-eye text-brand-yellow"></i> Reveal All
+        </button>
+        <button onclick="resetQuiz()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-brand-navy text-sm font-bold rounded-2xl border-2 border-slate-300 transition shadow-sm flex items-center gap-2">
+          <i class="fa-solid fa-rotate-right text-brand-teal"></i> Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="bg-white p-4 rounded-2xl border border-brand-teal/20 shadow-sm flex items-center gap-4">
+      <span class="text-xs font-black text-brand-navy uppercase tracking-wider shrink-0">Progress:</span>
+      <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden border border-slate-200">
+        <div id="quiz-progress-bar" class="bg-brand-teal h-full transition-all duration-300 w-0"></div>
+      </div>
+      <span id="progress-text" class="text-xs font-black text-brand-teal-dark shrink-0">0/10 Answered</span>
+    </div>
+
+    <!-- Quiz Questions List Container -->
+    <div id="questions-list" class="space-y-6">
+      <!-- Dynamic Injection of 10 Question Cards -->
+    </div>
+
+    <!-- Bottom Submit & Action Button Bar -->
+    <div class="flex flex-wrap justify-center items-center gap-3 py-4">
+      <button onclick="checkAnswers()" class="px-6 py-3.5 bg-brand-teal hover:bg-brand-teal-dark text-white text-base font-extrabold rounded-2xl transition shadow-lg flex items-center gap-2.5 transform hover:scale-[1.02] active:scale-[0.98]">
+        <i class="fa-solid fa-paper-plane text-brand-yellow text-lg"></i>
+        <span>Submit Answers</span>
+      </button>
+      <button onclick="showAnswers()" class="px-5 py-3.5 bg-brand-navy-light hover:bg-brand-navy text-white text-sm font-bold rounded-2xl transition shadow-md flex items-center gap-2">
+        <i class="fa-solid fa-eye text-brand-yellow"></i> Reveal All
+      </button>
+      <button onclick="resetQuiz()" class="px-5 py-3.5 bg-slate-100 hover:bg-slate-200 text-brand-navy text-sm font-bold rounded-2xl border-2 border-slate-300 transition shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-rotate-right text-brand-teal"></i> Reset
+      </button>
+    </div>
+
+    <!-- Completion Celebration Banner -->
+    <div id="completion-banner" class="hidden bg-emerald-50 border-2 border-emerald-400 p-6 md:p-8 rounded-3xl text-center space-y-4 animate-correct shadow-lg relative overflow-hidden">
+      <div class="w-16 h-16 bg-brand-yellow text-brand-navy rounded-full flex items-center justify-center mx-auto text-3xl shadow-md border-4 border-white animate-bounce">
+        <i class="fa-solid fa-trophy"></i>
+      </div>
+      <h3 id="banner-title" class="text-3xl font-black text-brand-navy">🎉 Excellent Work! 🎉</h3>
+      <p id="banner-subtitle" class="text-emerald-900 text-base max-w-md mx-auto font-bold">
+        You've completed all 10 Reported Speech questions!
+      </p>
+      <div class="flex flex-wrap justify-center gap-3 pt-2">
+        <button onclick="triggerCelebration()" class="px-5 py-2.5 bg-brand-yellow hover:bg-yellow-400 text-brand-navy font-black rounded-2xl shadow-md transition flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-sparkles"></i> More Confetti!
+        </button>
+        <button onclick="resetQuiz()" class="px-6 py-2.5 bg-brand-teal hover:bg-brand-teal-dark text-white font-black rounded-2xl shadow-lg transition inline-flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-rotate-right"></i> Try Again
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // --- REPORTED SPEECH QUIZ DATASET ---
+    const QUIZ_DATA = [
+      {
+        id: 1,
+        question: "She asked him where ............... the car.",
+        options: [
+          { letter: "a", text: "had he parked" },
+          { letter: "b", text: "he had parked" }
+        ],
+        correct: 1, // index 1 is 'b'
+        explanation: "In reported questions, we use statement word order (Subject + Verb), not question word order. Therefore, 'he had parked' is correct."
+      },
+      {
+        id: 2,
+        question: "He told me that he ............... to the party the next day.",
+        options: [
+          { letter: "a", text: "would come" },
+          { letter: "b", text: "will come" }
+        ],
+        correct: 0,
+        explanation: "When reporting future actions with a past reporting verb ('told'), the modal verb 'will' shifts back to 'would'."
+      },
+      {
+        id: 3,
+        question: "They said that they ............... for three hours.",
+        options: [
+          { letter: "a", text: "had been waiting" },
+          { letter: "b", text: "have been waiting" }
+        ],
+        correct: 0,
+        explanation: "Present Perfect Continuous ('have been waiting') backshifts to Past Perfect Continuous ('had been waiting') in reported speech."
+      },
+      {
+        id: 4,
+        question: "Mary asked John if he ............... her new phone.",
+        options: [
+          { letter: "a", text: "had seen" },
+          { letter: "b", text: "has seen" }
+        ],
+        correct: 0,
+        explanation: "Present Perfect tense ('has seen') changes to Past Perfect ('had seen') when reporting a past event."
+      },
+      {
+        id: 5,
+        question: "The teacher told us ............... in the corridor.",
+        options: [
+          { letter: "a", text: "not to run" },
+          { letter: "b", text: "don't run" }
+        ],
+        correct: 0,
+        explanation: "Reported commands and instructions use 'to + infinitive' or 'not to + infinitive' rather than imperative forms."
+      },
+      {
+        id: 6,
+        question: "He said, 'I live in London.' ➔ He said that he ............... in London.",
+        options: [
+          { letter: "a", text: "lived" },
+          { letter: "b", text: "lives" }
+        ],
+        correct: 0,
+        explanation: "The Present Simple tense ('live') shifts back to the Past Simple tense ('lived') when reporting."
+      },
+      {
+        id: 7,
+        question: "She asked me whether I ............... help her with her homework.",
+        options: [
+          { letter: "a", text: "could" },
+          { letter: "b", text: "can" }
+        ],
+        correct: 0,
+        explanation: "The modal verb 'can' shifts back to 'could' in reported speech."
+      },
+      {
+        id: 8,
+        question: "Tom mentioned that he ............... his keys the previous day.",
+        options: [
+          { letter: "a", text: "had lost" },
+          { letter: "b", text: "lost" }
+        ],
+        correct: 0,
+        explanation: "Past Simple ('lost') backshifts to Past Perfect ('had lost') to show an action completed before the reporting time."
+      },
+      {
+        id: 9,
+        question: "My mother asked me what time I ............... back.",
+        options: [
+          { letter: "a", text: "would be" },
+          { letter: "b", text: "will be" }
+        ],
+        correct: 0,
+        explanation: "'Will' changes to 'would', and reported question word order puts the subject ('I') before the verb ('would be')."
+      },
+      {
+        id: 10,
+        question: "Paul said that he ............... that movie twice before.",
+        options: [
+          { letter: "a", text: "had already seen" },
+          { letter: "b", text: "has already seen" }
+        ],
+        correct: 0,
+        explanation: "Present perfect ('has seen') backshifts to Past Perfect ('had seen') in reported statements."
+      }
+    ];
+
+    // State variables
+    let userSelections = new Array(QUIZ_DATA.length).fill(null);
+    let checkedState = new Array(QUIZ_DATA.length).fill(false);
+    let soundEnabled = true;
+
+    function renderQuiz() {
+      const container = document.getElementById('questions-list');
+      container.innerHTML = '';
+
+      QUIZ_DATA.forEach((item, qIdx) => {
+        const isChecked = checkedState[qIdx];
+        const selectedOpt = userSelections[qIdx];
+        const isCorrect = selectedOpt !== null && selectedOpt === item.correct;
+
+        // Card Wrapper
+        const card = document.createElement('div');
+        card.id = `question-card-${qIdx}`;
+        card.className = `bg-white p-6 rounded-3xl border-2 transition-all shadow-sm space-y-4 ${
+          isChecked 
+            ? (isCorrect ? 'border-emerald-400 bg-emerald-50/30' : 'border-red-300 bg-red-50/20')
+            : 'border-brand-teal/20 hover:border-brand-teal/40'
+        }`;
+
+        // Question Title Header
+        const header = document.createElement('div');
+        header.className = "flex items-start justify-between gap-3";
+        header.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-brand-teal-light text-brand-teal-dark border border-brand-teal/30 font-black text-sm flex items-center justify-center shrink-0">
+              ${qIdx + 1}
+            </span>
+            <h3 class="text-base md:text-lg font-bold text-brand-navy leading-snug">
+              ${item.question}
+            </h3>
+          </div>
+          ${isChecked ? (
+            isCorrect 
+              ? `<span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black flex items-center gap-1 border border-emerald-300"><i class="fa-solid fa-circle-check text-emerald-600"></i> Correct</span>`
+              : `<span class="px-3 py-1 rounded-full bg-red-100 text-red-800 text-xs font-black flex items-center gap-1 border border-red-300"><i class="fa-solid fa-circle-xmark text-red-600"></i> ${selectedOpt === null ? 'Unanswered' : 'Incorrect'}</span>`
+          ) : ''}
+        `;
+        card.appendChild(header);
+
+        // Options Container (A & B circular buttons)
+        const optionsGrid = document.createElement('div');
+        optionsGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-3 pt-1";
+
+        item.options.forEach((opt, oIdx) => {
+          const isSelected = selectedOpt === oIdx;
+          const isThisOptionCorrect = item.correct === oIdx;
+
+          const optBtn = document.createElement('button');
+          optBtn.type = "button";
+          optBtn.onclick = () => selectOption(qIdx, oIdx);
+
+          let btnStyle = "w-full p-4 rounded-2xl border-2 transition flex items-center gap-3 text-left font-bold text-sm shadow-sm ";
+          let circleStyle = "w-9 h-9 rounded-full border-2 flex items-center justify-center font-black text-sm shrink-0 transition-all ";
+
+          if (isChecked) {
+            if (isThisOptionCorrect) {
+              btnStyle += "border-emerald-500 bg-emerald-100 text-emerald-950 font-extrabold cursor-default";
+              circleStyle += "border-emerald-600 bg-emerald-600 text-white";
+            } else if (isSelected && !isCorrect) {
+              btnStyle += "border-red-400 bg-red-100 text-red-950 font-bold cursor-default";
+              circleStyle += "border-red-500 bg-red-500 text-white";
+            } else {
+              btnStyle += "border-slate-200 bg-slate-50 text-slate-400 cursor-default";
+              circleStyle += "border-slate-300 bg-slate-100 text-slate-400";
+            }
+          } else {
+            if (isSelected) {
+              btnStyle += "border-brand-teal bg-brand-teal-light text-brand-navy shadow-md scale-[1.01]";
+              circleStyle += "border-brand-teal bg-brand-teal text-white shadow-sm";
+            } else {
+              btnStyle += "border-brand-teal/20 bg-brand-cream hover:border-brand-teal/60 hover:bg-brand-teal-light/50 text-brand-navy";
+              circleStyle += "border-brand-teal/40 bg-white text-brand-navy group-hover:border-brand-teal";
+            }
+          }
+
+          optBtn.className = btnStyle;
+          optBtn.innerHTML = `
+            <div class="${circleStyle}">
+              ${opt.letter.toUpperCase()}
+            </div>
+            <span class="flex-1">${opt.text}</span>
+            ${isSelected ? '<i class="fa-solid fa-circle-dot text-brand-teal text-lg"></i>' : '<i class="fa-regular fa-circle text-slate-300 text-lg"></i>'}
+          `;
+
+          if (isChecked) optBtn.disabled = true;
+
+          optionsGrid.appendChild(optBtn);
+        });
+
+        card.appendChild(optionsGrid);
+
+        // Feedback & Grammar Explanation Box if Checked & Incorrect / Unanswered
+        if (isChecked && !isCorrect) {
+          const expBox = document.createElement('div');
+          expBox.className = "p-4 rounded-2xl bg-red-50 border-2 border-red-200 text-xs md:text-sm text-red-950 space-y-2 animate-wrong mt-2";
+          expBox.innerHTML = `
+            <div class="flex items-center gap-2 font-black text-red-800 text-sm">
+              <i class="fa-solid fa-triangle-exclamation text-red-600"></i>
+              <span>Grammar Explanation${selectedOpt === null ? ' (Unanswered)' : ''}:</span>
+            </div>
+            <p class="font-medium leading-relaxed">${item.explanation}</p>
+            <div class="pt-1 flex items-center gap-1.5 font-bold text-emerald-800 bg-emerald-100/70 px-3 py-1.5 rounded-xl border border-emerald-300 w-fit">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i>
+              <span>Correct Answer: <strong>Option (${item.options[item.correct].letter.toUpperCase()}) ${item.options[item.correct].text}</strong></span>
+            </div>
+          `;
+          card.appendChild(expBox);
+        } else if (isChecked && isCorrect) {
+          const expBox = document.createElement('div');
+          expBox.className = "p-3 rounded-2xl bg-emerald-100/60 border border-emerald-300 text-xs md:text-sm text-emerald-950 flex items-center gap-2 animate-correct mt-2 font-bold";
+          expBox.innerHTML = `
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+            <span>Great job! You picked the correct reported speech form.</span>
+          `;
+          card.appendChild(expBox);
+        }
+
+        container.appendChild(card);
+      });
+
+      updateProgress();
+    }
+
+    function selectOption(qIdx, oIdx) {
+      if (checkedState[qIdx]) return;
+      userSelections[qIdx] = oIdx;
+
+      // Automatically check this specific question upon user selection
+      checkedState[qIdx] = true;
+
+      const isCorrect = userSelections[qIdx] === QUIZ_DATA[qIdx].correct;
+      if (isCorrect) {
+        playSound('correct');
+      } else {
+        playSound('wrong');
+      }
+
+      renderQuiz();
+      checkOverallCompletion();
+    }
+
+    function checkAnswers() {
+      let newlyChecked = false;
+      QUIZ_DATA.forEach((_, idx) => {
+        if (!checkedState[idx]) newlyChecked = true;
+        checkedState[idx] = true;
+      });
+
+      renderQuiz();
+      checkOverallCompletion();
+      
+      if (newlyChecked) playSound('correct');
+    }
+
+    function showAnswers() {
+      QUIZ_DATA.forEach((item, idx) => {
+        userSelections[idx] = item.correct;
+        checkedState[idx] = true;
+      });
+      renderQuiz();
+      checkOverallCompletion();
+      playSound('complete');
+      triggerCelebration();
+    }
+
+    function resetQuiz() {
+      userSelections = new Array(QUIZ_DATA.length).fill(null);
+      checkedState = new Array(QUIZ_DATA.length).fill(false);
+      document.getElementById('completion-banner').classList.add('hidden');
+      renderQuiz();
+    }
+
+    function updateProgress() {
+      const answeredCount = userSelections.filter(s => s !== null).length;
+      let scoreCount = 0;
+
+      userSelections.forEach((sel, idx) => {
+        if (sel !== null && checkedState[idx] && sel === QUIZ_DATA[idx].correct) {
+          scoreCount++;
+        }
+      });
+
+      document.getElementById('score-counter').textContent = `${scoreCount} / ${QUIZ_DATA.length}`;
+      document.getElementById('progress-text').textContent = `${answeredCount}/10 Answered`;
+      
+      const pct = (answeredCount / QUIZ_DATA.length) * 100;
+      document.getElementById('quiz-progress-bar').style.width = `${pct}%`;
+    }
+
+    function checkOverallCompletion() {
+      const allChecked = checkedState.every(c => c === true);
+
+      if (allChecked) {
+        let score = 0;
+        userSelections.forEach((sel, idx) => {
+          if (sel !== null && sel === QUIZ_DATA[idx].correct) score++;
+        });
+
+        const banner = document.getElementById('completion-banner');
+        const title = document.getElementById('banner-title');
+        const subtitle = document.getElementById('banner-subtitle');
+
+        if (score >= 8) {
+          title.textContent = "🎉 Excellent Work! (" + score + "/10) 🎉";
+          subtitle.textContent = "Outstanding performance! You have demonstrated fantastic knowledge of Reported Speech word order and tenses!";
+        } else if (score === 7 || score === 6) {
+          title.textContent = "👏 Great Job! (" + score + "/10) 👏";
+          subtitle.textContent = "Great Job! You have completely mastered Reported Speech word order and tenses!";
+        } else {
+          title.textContent = "💪 Good Work! (" + score + "/10) 💪";
+          subtitle.textContent = "Good Work! continue practicing to master Reported Speech!";
+        }
+
+        banner.classList.remove('hidden');
+        triggerCelebration();
+        playSound('complete');
+
+        setTimeout(() => {
+          banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('sound-icon');
+      if (soundEnabled) {
+        icon.className = 'fa-solid fa-volume-high text-brand-teal';
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+      }
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'correct') {
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.12, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.25);
+        } else if (type === 'wrong') {
+          osc.frequency.setValueAtTime(220, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(164.81, ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.18, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.22);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.22);
+        } else if (type === 'complete') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g);
+            g.connect(ctx.destination);
+            o.frequency.value = freq;
+            g.gain.setValueAtTime(0.1, ctx.currentTime + i * 0.08);
+            g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.08 + 0.2);
+            o.start(ctx.currentTime + i * 0.08);
+            o.stop(ctx.currentTime + i * 0.08 + 0.2);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function triggerCelebration() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    window.onload = function() {
+      renderQuiz();
+    };
+  </script>
+</body>
+</html>

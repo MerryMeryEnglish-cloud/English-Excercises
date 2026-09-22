@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merry Mery English - Phrasal Verbs Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              teal: '#00BDA8',
+              'teal-dark': '#009686',
+              'teal-light': '#E6F8F6',
+              navy: '#0B2545',
+              'navy-dark': '#06182E',
+              'navy-light': '#183B6B',
+              yellow: '#FFBE1A',
+              'yellow-light': '#FFF8E6',
+              cream: '#F7FBFB'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F2F7F7;
+      color: #0B2545;
+    }
+    
+    @keyframes pulseCorrect {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    
+    @keyframes shakeWrong {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .animate-correct {
+      animation: pulseCorrect 0.4s ease-in-out;
+    }
+
+    .animate-wrong {
+      animation: shakeWrong 0.4s ease-in-out;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #e2e8f0;
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #00BDA8;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- Top Header with Logo Branding -->
+  <header class="border-b-2 border-brand-teal/20 bg-white sticky top-0 z-50 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+      
+      <!-- Logo Branding -->
+      <div class="flex items-center gap-3">
+        <!-- Logo Icon Circle -->
+        <div class="w-12 h-12 rounded-full border-4 border-brand-teal bg-white flex items-center justify-center shadow-sm relative group">
+          <div class="text-center font-extrabold leading-none text-brand-navy text-[10px] uppercase tracking-tighter">
+            <span class="block text-brand-navy font-black text-xs leading-none">MERRY</span>
+            <span class="block text-brand-teal font-extrabold text-[11px] leading-none">ENGLISH</span>
+          </div>
+          <!-- Smiley Speech Bubble Badge -->
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-brand-yellow rounded-full border-2 border-white flex items-center justify-center text-brand-navy text-[10px] shadow-sm">
+            <i class="fa-solid fa-face-smile"></i>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="font-black text-xl text-brand-navy leading-none flex items-center gap-2">
+            <span>Merry Mery English</span>
+            <span class="text-brand-yellow text-sm">✨</span>
+          </h1>
+          <p class="text-xs font-semibold text-brand-teal-dark mt-0.5">Phrasal Verbs Studio • Match • React • Write</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex bg-brand-cream p-1.5 rounded-2xl border-2 border-brand-teal/20 text-sm font-bold shadow-inner">
+        <button id="nav-stage1" onclick="switchTab('stage1')" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 bg-brand-teal text-white shadow-md">
+          <i class="fa-solid fa-link"></i>
+          <span>1. Match</span>
+        </button>
+        <button id="nav-stage2" onclick="switchTab('stage2')" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-brand-navy/70 hover:text-brand-navy hover:bg-white/60">
+          <i class="fa-solid fa-bolt text-brand-yellow"></i>
+          <span>2. React!</span>
+        </button>
+        <button id="nav-stage3" onclick="switchTab('stage3')" class="px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-brand-navy/70 hover:text-brand-navy hover:bg-white/60">
+          <i class="fa-solid fa-pen-nib"></i>
+          <span>3. Write</span>
+        </button>
+      </nav>
+
+      <!-- Global Controls -->
+      <div class="flex items-center gap-3">
+        <button id="sound-btn" onclick="toggleSound()" class="p-2.5 rounded-xl bg-brand-cream border-2 border-brand-teal/30 text-brand-navy hover:bg-brand-teal/10 transition shadow-sm" title="Toggle Sound">
+          <i id="sound-icon" class="fa-solid fa-volume-high text-brand-teal"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
+
+    <!-- STAGE 1: MATCHING GAME -->
+    <section id="stage1-container" class="space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border-2 border-brand-teal/30 shadow-sm">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-brand-navy bg-brand-yellow px-3 py-1 rounded-full border border-brand-yellow/50 inline-flex items-center gap-1 shadow-sm">
+            <i class="fa-solid fa-star text-brand-navy"></i> Stage 1: Association
+          </span>
+          <h2 class="text-2xl font-black text-brand-navy mt-2">Phrasal Verbs Matching Game</h2>
+          <p class="text-slate-600 text-sm">Select a Phrasal Verb on the left, then click its corresponding definition on the right.</p>
+        </div>
+        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end flex-wrap">
+          <div class="bg-brand-teal-light px-4 py-2 rounded-2xl border-2 border-brand-teal/40 text-center">
+            <span class="text-xs text-brand-navy-light font-bold uppercase tracking-wider block">Matches</span>
+            <span id="match-score" class="text-xl font-black text-brand-teal-dark">0 / 9</span>
+          </div>
+          <button onclick="checkAnswers()" class="px-4 py-2.5 bg-brand-teal hover:bg-brand-teal-dark text-white text-sm font-bold rounded-2xl transition shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-brand-yellow"></i> Check Answers
+          </button>
+          <button onclick="resetMatchingGame()" class="px-4 py-2.5 bg-brand-navy hover:bg-brand-navy-light text-white text-sm font-bold rounded-2xl transition shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-rotate-right text-brand-yellow"></i> Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Verbs Column -->
+        <div class="space-y-3" id="verbs-column">
+          <h3 class="text-xs font-black text-brand-navy/70 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-list text-brand-teal"></i> Phrasal Verbs
+          </h3>
+        </div>
+
+        <!-- Definitions Column -->
+        <div class="space-y-3" id="defs-column">
+          <h3 class="text-xs font-black text-brand-navy/70 uppercase tracking-wider mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-book text-brand-teal"></i> Definitions
+          </h3>
+        </div>
+      </div>
+
+      <!-- Completion Banner -->
+      <div id="matching-complete-banner" class="hidden bg-emerald-50 border-2 border-emerald-400 p-6 rounded-3xl text-center space-y-4 animate-correct shadow-lg relative overflow-hidden">
+        <div class="w-16 h-16 bg-brand-yellow text-brand-navy rounded-full flex items-center justify-center mx-auto text-3xl shadow-md border-4 border-white animate-bounce">
+          <i class="fa-solid fa-face-laugh-beam"></i>
+        </div>
+        <h3 id="completion-title" class="text-3xl font-black text-brand-navy">🎉 Well done! Excellent Job! 🎉</h3>
+        <p id="completion-subtitle" class="text-emerald-900 text-sm max-w-md mx-auto font-bold">You've successfully mastered all phrasal verbs and their definitions!</p>
+        <div class="flex flex-wrap justify-center gap-3 pt-2">
+          <button onclick="triggerCelebration()" class="px-5 py-2.5 bg-brand-yellow hover:bg-yellow-400 text-brand-navy font-black rounded-2xl shadow-md transition flex items-center gap-2 text-sm">
+            <i class="fa-solid fa-sparkles"></i> More Confetti!
+          </button>
+          <button onclick="switchTab('stage2')" class="px-6 py-2.5 bg-brand-teal hover:bg-brand-teal-dark text-white font-black rounded-2xl shadow-lg transition inline-flex items-center gap-2 text-sm">
+            <span>Continue to Stage 2: React!</span>
+            <i class="fa-solid fa-arrow-right text-brand-yellow"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 2: REACT! SPEED CHALLENGE -->
+    <section id="stage2-container" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border-2 border-brand-teal/30 shadow-sm">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-brand-navy bg-brand-yellow px-3 py-1 rounded-full border border-brand-yellow/50 inline-flex items-center gap-1 shadow-sm">
+            <i class="fa-solid fa-bolt text-brand-navy"></i> Stage 2: React!
+          </span>
+          <h2 class="text-2xl font-black text-brand-navy mt-2">Speed Scenario Challenge</h2>
+          <p class="text-slate-600 text-sm">Read or listen to the real-world scenario and pick the target phrasal verb instantly.</p>
+        </div>
+        <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
+          <div class="bg-brand-teal-light px-5 py-2.5 rounded-2xl border-2 border-brand-teal/40 text-center">
+            <span class="text-xs text-brand-navy-light font-bold uppercase tracking-wider block">Completed</span>
+            <span id="react-progress" class="text-2xl font-black text-brand-teal-dark">0 / 9</span>
+          </div>
+          <button onclick="resetReactGame()" class="px-4 py-2.5 bg-brand-navy hover:bg-brand-navy-light text-white text-sm font-bold rounded-2xl transition shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-rotate-right text-brand-yellow"></i> Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Card Container -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border-2 border-brand-teal/30 shadow-sm space-y-6">
+        <div class="flex justify-between items-center border-b-2 border-brand-cream pb-4">
+          <span id="scenario-number" class="text-sm font-black text-brand-teal uppercase tracking-wider">Scenario #1</span>
+          <button onclick="speakScenario()" class="px-4 py-2 bg-brand-yellow hover:bg-yellow-400 text-brand-navy text-xs font-extrabold rounded-xl transition shadow-sm flex items-center gap-2">
+            <i class="fa-solid fa-volume-high"></i> Listen Prompt
+          </button>
+        </div>
+
+        <!-- Scenario Text -->
+        <div class="p-6 bg-brand-cream rounded-2xl border-2 border-brand-teal/20 text-center space-y-2">
+          <p id="scenario-prompt" class="text-lg md:text-xl font-bold text-brand-navy italic">
+            "You are driving near a primary school and see children crossing the street."
+          </p>
+        </div>
+
+        <!-- Options Buttons -->
+        <div>
+          <h3 class="text-xs font-black text-brand-navy/70 uppercase tracking-wider mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-question text-brand-teal"></i> Select the correct phrasal verb:
+          </h3>
+          <div id="react-options-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Dynamic button injection -->
+          </div>
+        </div>
+
+        <!-- Target Answer Result Banner -->
+        <div id="target-answer-box" class="hidden p-4 bg-emerald-50 border-2 border-emerald-400 rounded-2xl text-center space-y-1 animate-correct">
+          <span class="text-xs font-black text-emerald-800 uppercase tracking-wider block">Target Oral Response:</span>
+          <p id="target-answer-text" class="text-base font-black text-emerald-950"></p>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center pt-2">
+          <button id="prev-react-btn" onclick="navigateReact(-1)" class="px-5 py-2.5 bg-brand-cream border-2 border-brand-teal/30 text-brand-navy font-bold rounded-2xl hover:bg-brand-teal-light transition shadow-sm disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 text-sm">
+            <i class="fa-solid fa-arrow-left"></i> Previous
+          </button>
+          <button id="next-react-btn" onclick="navigateReact(1)" class="px-5 py-2.5 bg-brand-navy hover:bg-brand-navy-light text-white font-bold rounded-2xl transition shadow-md flex items-center gap-2 text-sm">
+            <span>Next Scenario</span> <i class="fa-solid fa-arrow-right text-brand-yellow"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stage 2 Completion Banner -->
+      <div id="react-complete-banner" class="hidden bg-emerald-50 border-2 border-emerald-400 p-6 rounded-3xl text-center space-y-4 animate-correct shadow-lg relative overflow-hidden">
+        <div class="w-16 h-16 bg-brand-yellow text-brand-navy rounded-full flex items-center justify-center mx-auto text-3xl shadow-md border-4 border-white animate-bounce">
+          <i class="fa-solid fa-face-laugh-beam"></i>
+        </div>
+        <h3 class="text-3xl font-black text-brand-navy">🎉 Well done! Excellent Job! 🎉</h3>
+        <p class="text-emerald-900 text-sm max-w-md mx-auto font-bold">You've successfully completed all speed scenarios and mastered the target oral responses!</p>
+        <div class="flex flex-wrap justify-center gap-3 pt-2">
+          <button onclick="triggerCelebration()" class="px-5 py-2.5 bg-brand-yellow hover:bg-yellow-400 text-brand-navy font-black rounded-2xl shadow-md transition flex items-center gap-2 text-sm">
+            <i class="fa-solid fa-sparkles"></i> More Confetti!
+          </button>
+          <button onclick="switchTab('stage3')" class="px-6 py-2.5 bg-brand-teal hover:bg-brand-teal-dark text-white font-black rounded-2xl shadow-lg transition inline-flex items-center gap-2 text-sm">
+            <span>Continue to Stage 3: Write</span>
+            <i class="fa-solid fa-arrow-right text-brand-yellow"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE 3: MICRO-WRITING EXTENSION -->
+    <section id="stage3-container" class="hidden space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border-2 border-brand-teal/30 shadow-sm">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-brand-navy bg-brand-yellow px-3 py-1 rounded-full border border-brand-yellow/50 inline-flex items-center gap-1 shadow-sm">
+            <i class="fa-solid fa-pen-nib text-brand-navy"></i> Stage 3: Micro-Writing
+          </span>
+          <h2 class="text-2xl font-black text-brand-navy mt-2">Micro-Writing Studio</h2>
+          <p class="text-slate-600 text-sm">Select at least 3 phrasal verbs and write a short paragraph (3-4 sentences) describing a busy day.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="copyWritingText()" class="px-5 py-2.5 bg-brand-navy hover:bg-brand-navy-light text-white text-sm font-bold rounded-2xl transition shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-copy text-brand-yellow"></i> Copy Paragraph
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Target Verbs Selector -->
+        <div class="bg-white p-6 rounded-3xl border-2 border-brand-teal/30 space-y-4 shadow-sm">
+          <h3 class="text-sm font-black text-brand-navy uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-tags text-brand-teal"></i> Select 3 Phrasal Verbs:
+          </h3>
+          <p class="text-xs text-slate-500 font-medium">Click to select the verbs you will include in your short text:</p>
+          
+          <div id="writing-verb-tags" class="flex flex-wrap gap-2">
+            <!-- Dynamic checkboxes / tags -->
+          </div>
+
+          <div class="p-4 bg-brand-cream border border-brand-teal/20 rounded-2xl text-xs space-y-1">
+            <span class="text-brand-navy-light block font-bold">Active Targets Detected:</span>
+            <div id="detected-targets-badge" class="flex flex-wrap gap-1.5 mt-2 text-slate-400 italic">
+              None detected yet...
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Area Studio -->
+        <div class="lg:col-span-2 bg-white p-6 rounded-3xl border-2 border-brand-teal/30 space-y-4 flex flex-col shadow-sm">
+          <div class="flex justify-between items-center">
+            <label for="writing-textarea" class="text-sm font-black text-brand-navy flex items-center gap-2">
+              <i class="fa-solid fa-pen-to-square text-brand-teal"></i> Write Your Paragraph:
+            </label>
+            <span id="word-count" class="text-xs font-bold text-brand-teal-dark bg-brand-teal-light px-3 py-1 rounded-full">0 words</span>
+          </div>
+
+          <textarea id="writing-textarea" oninput="analyzeWriting()" rows="7" placeholder="Yesterday was chaotic. I had to get off the train early because of delays..." class="w-full bg-brand-cream text-brand-navy p-4 rounded-2xl border-2 border-brand-teal/20 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20 outline-none resize-none custom-scrollbar text-base font-medium leading-relaxed"></textarea>
+
+          <!-- Writing Example Prompt -->
+          <div class="bg-brand-yellow-light border-2 border-brand-yellow/60 p-4 rounded-2xl space-y-2">
+            <span class="text-xs font-black text-brand-navy uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-lightbulb text-brand-yellow"></i> Model Example:
+            </span>
+            <p class="text-xs text-brand-navy/90 italic leading-relaxed font-medium">
+              "Yesterday was chaotic. I had to <strong class="text-brand-teal-dark font-black underline">get off</strong> the train early because of delays. Then, I had to <strong class="text-brand-teal-dark font-black underline">take down</strong> notes in a very long meeting, and finally, I decided to <strong class="text-brand-teal-dark font-black underline">turn down</strong> an invitation to party because I was exhausted."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // --- DATA STRUCTURES ---
+    const PHRASAL_VERBS_DATA = [
+      { id: 1, verb: "Slow down", letter: "A", def: "To decrease speed or movement.", prompt: "You are driving near a primary school and see children crossing the street.", targetAnswer: "I need to slow down." },
+      { id: 2, verb: "Look down on", letter: "E", def: "To feel or show superiority over someone; to consider someone inferior.", prompt: "A colleague treats the intern as if they aren't smart or capable just because of their position.", targetAnswer: "He shouldn't look down on the intern." },
+      { id: 3, verb: "Break into", letter: "B", def: "To enter a building or system by force or illegally.", prompt: "A burglar forces the lock of a shop during the night.", targetAnswer: "The burglar tried to break into the shop." },
+      { id: 4, verb: "Drop off", letter: "I", def: "To take someone or something to a destination and leave them there.", prompt: "You take an Uber to the airport and need to be left right at the departure gate.", targetAnswer: "Can you drop me off at Terminal 2?" },
+      { id: 5, verb: "Get off", letter: "C", def: "To leave a bus, train, aircraft, or vehicle.", prompt: "You arrive at your bus stop or subway station after travelling for 40 minutes.", targetAnswer: "I need to get off at this station." },
+      { id: 6, verb: "Get down", letter: "D", def: "To lower your body or duck to avoid something or get closer to the floor.", prompt: "A ball is flying towards your head at full speed!", targetAnswer: "You need to get down!" },
+      { id: 7, verb: "Take down", letter: "F", def: "To write notes or record information on paper or digitally.", prompt: "Your manager is giving important instructions during a call and you don't want to forget anything.", targetAnswer: "I am taking down what she says." },
+      { id: 8, verb: "Go out", letter: "H", def: "To leave your home to go to a social event, restaurant, or party.", prompt: "It's Friday night and you don't want to stay home; you want to have dinner with friends.", targetAnswer: "I want to go out tonight." },
+      { id: 9, verb: "Turn down", letter: "G", def: "To reject an offer, invitation, or request (or reduce volume/heat).", prompt: "A client offers you a contract with very bad conditions and you decide not to accept it.", targetAnswer: "I am going to turn down the offer." }
+    ];
+
+    // State Variables
+    let soundEnabled = true;
+    let activeVerbId = null;
+    let activeDefId = null;
+    let matchedIds = new Set();
+    let currentReactIndex = 0;
+    let reactSolved = new Set();
+    let selectedWritingVerbs = new Set([1, 5, 9]);
+    let shuffledDefs = [];
+
+    function switchTab(tabId) {
+      ['stage1', 'stage2', 'stage3'].forEach(id => {
+        const container = document.getElementById(`${id}-container`);
+        const navBtn = document.getElementById(`nav-${id}`);
+        if (id === tabId) {
+          container.classList.remove('hidden');
+          navBtn.className = 'px-4 py-2 rounded-xl transition-all flex items-center gap-2 bg-brand-teal text-white shadow-md';
+        } else {
+          container.classList.add('hidden');
+          navBtn.className = 'px-4 py-2 rounded-xl transition-all flex items-center gap-2 text-brand-navy/70 hover:text-brand-navy hover:bg-white/60';
+        }
+      });
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('sound-icon');
+      if (soundEnabled) {
+        icon.className = 'fa-solid fa-volume-high text-brand-teal';
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+      }
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'correct') {
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.15, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.3);
+        } else if (type === 'wrong') {
+          osc.frequency.setValueAtTime(220, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(164.81, ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.2, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.25);
+        } else if (type === 'complete') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g);
+            g.connect(ctx.destination);
+            o.frequency.value = freq;
+            g.gain.setValueAtTime(0.12, ctx.currentTime + i * 0.1);
+            g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.1 + 0.25);
+            o.start(ctx.currentTime + i * 0.1);
+            o.stop(ctx.currentTime + i * 0.1 + 0.25);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function triggerCelebration() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    function initMatchingGame() {
+      activeVerbId = null;
+      activeDefId = null;
+      matchedIds.clear();
+      document.getElementById('matching-complete-banner').classList.add('hidden');
+      document.getElementById('match-score').textContent = '0 / 9';
+
+      shuffledDefs = [...PHRASAL_VERBS_DATA].sort(() => Math.random() - 0.5);
+      renderMatchingColumns();
+    }
+
+    function resetMatchingGame() {
+      initMatchingGame();
+    }
+
+    function renderMatchingColumns() {
+      const verbsCol = document.getElementById('verbs-column');
+      const defsCol = document.getElementById('defs-column');
+
+      verbsCol.innerHTML = '<h3 class="text-xs font-black text-brand-navy/70 uppercase tracking-wider mb-2 flex items-center gap-2"><i class="fa-solid fa-list text-brand-teal"></i> Phrasal Verbs</h3>';
+      defsCol.innerHTML = '<h3 class="text-xs font-black text-brand-navy/70 uppercase tracking-wider mb-2 flex items-center gap-2"><i class="fa-solid fa-book text-brand-teal"></i> Definitions</h3>';
+
+      PHRASAL_VERBS_DATA.forEach(item => {
+        const isMatched = matchedIds.has(item.id);
+        const isSelected = activeVerbId === item.id;
+
+        const verbBtn = document.createElement('button');
+        verbBtn.id = `verb-btn-${item.id}`;
+        verbBtn.onclick = () => selectVerb(item.id);
+        
+        if (isMatched) {
+          verbBtn.className = 'w-full p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 font-black text-left flex justify-between items-center cursor-default shadow-sm';
+          verbBtn.innerHTML = `<span>${item.verb}</span><i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>`;
+          verbBtn.disabled = true;
+        } else if (isSelected) {
+          verbBtn.className = 'w-full p-4 rounded-2xl border-2 border-brand-teal bg-brand-teal-light text-brand-navy font-black text-left flex justify-between items-center shadow-md scale-[1.02] transition-transform';
+          verbBtn.innerHTML = `<span>${item.verb}</span><i class="fa-solid fa-hand-pointer text-brand-teal"></i>`;
+        } else {
+          verbBtn.className = 'w-full p-4 rounded-2xl border-2 border-brand-teal/20 bg-white hover:border-brand-teal hover:bg-brand-teal-light text-brand-navy font-bold text-left transition shadow-sm';
+          verbBtn.innerHTML = `<span>${item.verb}</span>`;
+        }
+        verbsCol.appendChild(verbBtn);
+      });
+
+      shuffledDefs.forEach(item => {
+        const isMatched = matchedIds.has(item.id);
+        const isSelected = activeDefId === item.id;
+
+        const defBtn = document.createElement('button');
+        defBtn.id = `def-btn-${item.id}`;
+        defBtn.onclick = () => selectDef(item.id);
+
+        if (isMatched) {
+          defBtn.className = 'w-full p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 font-medium text-left flex justify-between items-center cursor-default shadow-sm';
+          defBtn.innerHTML = `<div><span class="font-black text-emerald-700 mr-2">${item.letter}.</span>${item.def}</div><i class="fa-solid fa-circle-check text-emerald-600 text-lg ml-2 shrink-0"></i>`;
+          defBtn.disabled = true;
+        } else if (isSelected) {
+          defBtn.className = 'w-full p-4 rounded-2xl border-2 border-brand-teal bg-brand-teal-light text-brand-navy font-medium text-left flex justify-between items-center shadow-md scale-[1.02] transition-transform';
+          defBtn.innerHTML = `<div><span class="font-black text-brand-teal mr-2">${item.letter}.</span>${item.def}</div><i class="fa-solid fa-hand-pointer text-brand-teal ml-2 shrink-0"></i>`;
+        } else {
+          defBtn.className = 'w-full p-4 rounded-2xl border-2 border-brand-teal/20 bg-white hover:border-brand-teal hover:bg-brand-teal-light text-brand-navy font-medium text-left transition shadow-sm';
+          defBtn.innerHTML = `<div><span class="font-black text-brand-teal mr-2">${item.letter}.</span>${item.def}</div>`;
+        }
+        defsCol.appendChild(defBtn);
+      });
+    }
+
+    function selectVerb(id) {
+      if (matchedIds.has(id)) return;
+      activeVerbId = id;
+      renderMatchingColumns();
+      checkMatchAttempt();
+    }
+
+    function selectDef(id) {
+      if (matchedIds.has(id)) return;
+      activeDefId = id;
+      renderMatchingColumns();
+      checkMatchAttempt();
+    }
+
+    function checkMatchAttempt() {
+      if (activeVerbId !== null && activeDefId !== null) {
+        if (activeVerbId === activeDefId) {
+          playSound('correct');
+          matchedIds.add(activeVerbId);
+          document.getElementById('match-score').textContent = `${matchedIds.size} / 9`;
+          activeVerbId = null;
+          activeDefId = null;
+          renderMatchingColumns();
+
+          if (matchedIds.size === PHRASAL_VERBS_DATA.length) {
+            playSound('complete');
+            triggerCelebration();
+            document.getElementById('matching-complete-banner').classList.remove('hidden');
+          }
+        } else {
+          playSound('wrong');
+          const verbElement = document.getElementById(`verb-btn-${activeVerbId}`);
+          const defElement = document.getElementById(`def-btn-${activeDefId}`);
+          if (verbElement) verbElement.classList.add('animate-wrong', 'border-red-500', 'bg-red-50');
+          if (defElement) defElement.classList.add('animate-wrong', 'border-red-500', 'bg-red-50');
+
+          setTimeout(() => {
+            activeVerbId = null;
+            activeDefId = null;
+            renderMatchingColumns();
+          }, 500);
+        }
+      }
+    }
+
+    function checkAnswers() {
+      PHRASAL_VERBS_DATA.forEach(item => matchedIds.add(item.id));
+      document.getElementById('match-score').textContent = '9 / 9';
+      activeVerbId = null;
+      activeDefId = null;
+      renderMatchingColumns();
+      playSound('complete');
+      triggerCelebration();
+      document.getElementById('matching-complete-banner').classList.remove('hidden');
+    }
+
+    function resetReactGame() {
+      currentReactIndex = 0;
+      reactSolved.clear();
+      document.getElementById('react-complete-banner').classList.add('hidden');
+      renderReactScenario();
+    }
+
+    function renderReactScenario() {
+      const current = PHRASAL_VERBS_DATA[currentReactIndex];
+      
+      document.getElementById('scenario-number').textContent = `Scenario #${currentReactIndex + 1} of ${PHRASAL_VERBS_DATA.length}`;
+      document.getElementById('scenario-prompt').textContent = `"${current.prompt}"`;
+      document.getElementById('react-progress').textContent = `${reactSolved.size} / 9 Completed`;
+
+      const targetBox = document.getElementById('target-answer-box');
+      document.getElementById('target-answer-text').textContent = `"${current.targetAnswer}"`;
+
+      document.getElementById('prev-react-btn').disabled = currentReactIndex === 0;
+
+      const nextBtn = document.getElementById('next-react-btn');
+      if (nextBtn) {
+        if (currentReactIndex === PHRASAL_VERBS_DATA.length - 1) {
+          nextBtn.innerHTML = `<span>Finish Stage 2</span> <i class="fa-solid fa-flag-checkered text-brand-yellow"></i>`;
+        } else {
+          nextBtn.innerHTML = `<span>Next Scenario</span> <i class="fa-solid fa-arrow-right text-brand-yellow"></i>`;
+        }
+      }
+
+      const optionsGrid = document.getElementById('react-options-grid');
+      optionsGrid.innerHTML = '';
+
+      const isSolved = reactSolved.has(current.id);
+      if (isSolved) {
+        targetBox.classList.remove('hidden');
+      } else {
+        targetBox.classList.add('hidden');
+      }
+
+      let distractors = PHRASAL_VERBS_DATA.filter(p => p.id !== current.id).sort(() => Math.random() - 0.5).slice(0, 2);
+      let choices = [current, ...distractors].sort(() => Math.random() - 0.5);
+
+      choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.onclick = () => handleReactChoice(choice.id, current.id, btn);
+        
+        if (isSolved) {
+          if (choice.id === current.id) {
+            btn.className = 'react-option-btn p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-500 text-white font-bold text-center shadow-md cursor-default';
+          } else {
+            btn.className = 'react-option-btn p-4 rounded-2xl border-2 border-slate-200 bg-slate-100 text-slate-400 font-medium text-center cursor-default';
+          }
+          btn.disabled = true;
+        } else {
+          btn.className = 'react-option-btn p-4 rounded-2xl border-2 border-brand-teal/30 bg-brand-cream hover:bg-brand-teal-light hover:border-brand-teal text-brand-navy font-bold text-center transition shadow-sm';
+        }
+
+        btn.textContent = choice.verb;
+        optionsGrid.appendChild(btn);
+      });
+    }
+
+    function handleReactChoice(chosenId, correctId, btnElement) {
+      if (chosenId === correctId) {
+        playSound('correct');
+        btnElement.className = 'react-option-btn p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-500 text-white font-bold text-center animate-correct shadow-md';
+        
+        const allButtons = document.querySelectorAll('.react-option-btn');
+        allButtons.forEach(b => b.disabled = true);
+
+        const targetBox = document.getElementById('target-answer-box');
+        targetBox.classList.remove('hidden');
+
+        reactSolved.add(correctId);
+        document.getElementById('react-progress').textContent = `${reactSolved.size} / 9 Completed`;
+
+        if (reactSolved.size === PHRASAL_VERBS_DATA.length) {
+          playSound('complete');
+          triggerCelebration();
+          const banner = document.getElementById('react-complete-banner');
+          banner.classList.remove('hidden');
+          setTimeout(() => {
+            banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        }
+      } else {
+        playSound('wrong');
+        btnElement.className = 'react-option-btn p-4 rounded-2xl border-2 border-red-500 bg-red-500 text-white font-bold text-center animate-wrong shadow-md opacity-90';
+        btnElement.disabled = true;
+      }
+    }
+
+    function navigateReact(dir) {
+      if (dir === 1 && currentReactIndex === PHRASAL_VERBS_DATA.length - 1) {
+        const banner = document.getElementById('react-complete-banner');
+        banner.classList.remove('hidden');
+        setTimeout(() => {
+          banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+        triggerCelebration();
+        playSound('complete');
+        return;
+      }
+      currentReactIndex += dir;
+      if (currentReactIndex < 0) currentReactIndex = 0;
+      if (currentReactIndex >= PHRASAL_VERBS_DATA.length) currentReactIndex = PHRASAL_VERBS_DATA.length - 1;
+      renderReactScenario();
+    }
+
+    function speakScenario() {
+      const prompt = PHRASAL_VERBS_DATA[currentReactIndex].prompt;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(prompt);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function renderWritingTags() {
+      const container = document.getElementById('writing-verb-tags');
+      container.innerHTML = '';
+
+      PHRASAL_VERBS_DATA.forEach(item => {
+        const isSelected = selectedWritingVerbs.has(item.id);
+        const tag = document.createElement('button');
+        tag.onclick = () => toggleWritingVerb(item.id);
+        tag.className = isSelected 
+          ? 'px-3 py-1.5 rounded-xl text-xs font-black bg-brand-teal text-white border-2 border-brand-teal shadow-sm transition flex items-center gap-1.5'
+          : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-brand-cream text-brand-navy hover:bg-brand-teal-light border-2 border-brand-teal/20 transition flex items-center gap-1.5';
+        
+        tag.innerHTML = `
+          <span>${item.verb}</span>
+          ${isSelected ? '<i class="fa-solid fa-check text-brand-yellow"></i>' : ''}
+        `;
+        container.appendChild(tag);
+      });
+    }
+
+    function toggleWritingVerb(id) {
+      if (selectedWritingVerbs.has(id)) {
+        if (selectedWritingVerbs.size > 1) {
+          selectedWritingVerbs.delete(id);
+        }
+      } else {
+        selectedWritingVerbs.add(id);
+      }
+      renderWritingTags();
+      analyzeWriting();
+    }
+
+    function analyzeWriting() {
+      const text = document.getElementById('writing-textarea').value.toLowerCase();
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      document.getElementById('word-count').textContent = `${words} words`;
+
+      const badgeContainer = document.getElementById('detected-targets-badge');
+      badgeContainer.innerHTML = '';
+
+      selectedWritingVerbs.forEach(id => {
+        const verbObj = PHRASAL_VERBS_DATA.find(p => p.id === id);
+        const baseVerb = verbObj.verb.toLowerCase();
+        
+        const parts = baseVerb.split(' ');
+        const isFound = text.includes(parts[0]) && text.includes(parts[parts.length - 1]);
+
+        const badge = document.createElement('span');
+        if (isFound) {
+          badge.className = 'px-2.5 py-1 rounded-xl bg-emerald-100 border border-emerald-400 text-emerald-900 text-xs font-black flex items-center gap-1 shadow-sm';
+          badge.innerHTML = `<i class="fa-solid fa-check text-emerald-600"></i> ${verbObj.verb}`;
+        } else {
+          badge.className = 'px-2.5 py-1 rounded-xl bg-slate-100 border border-slate-300 text-slate-500 text-xs font-semibold';
+          badge.textContent = verbObj.verb;
+        }
+        badgeContainer.appendChild(badge);
+      });
+    }
+
+    function copyWritingText() {
+      const text = document.getElementById('writing-textarea').value;
+      if (!text) return;
+      
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+
+      const copyBtn = document.querySelector('button[onclick="copyWritingText()"]');
+      copyBtn.innerHTML = '<i class="fa-solid fa-check text-brand-yellow"></i> Copied!';
+      setTimeout(() => {
+        copyBtn.innerHTML = '<i class="fa-solid fa-copy text-brand-yellow"></i> Copy Paragraph';
+      }, 2000);
+    }
+
+    window.onload = function() {
+      initMatchingGame();
+      renderReactScenario();
+      renderWritingTags();
+    };
+  </script>
+</body>
+</html>
