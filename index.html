@@ -3,15 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Exercises</title>
+    <title>English Exercises & Quizzes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #1a365d;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        .exercise-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .exercise-item {
+            margin-bottom: 15px;
+        }
+        .exercise-link {
+            display: block;
+            padding: 14px 20px;
+            background-color: #3182ce;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .exercise-link:hover {
+            background-color: #2b6cb0;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
-    <h1>English Exercises & Quizzes</h1>
-    <ul>
-        <li><a href="merry_mery_english_reported_speech_quiz.html">Reported Speech Quiz</a></li>
-        <li><a href="merry_mery_english_the_little_prince_reading.html">The Little Prince Reading</a></li>
-        <li><a href="merry_mery_english_verb_mean_masterclass.html">Verb Mean Masterclass</a></li>
-        <li><a href="dynamic_english_phrasal_verbs_master_game.html">Phrasal Verbs Master Game</a></li>
-    </ul>
+    <div class="container">
+        <h1>English Exercises & Quizzes</h1>
+        <ul class="exercise-list">
+            <li class="exercise-item">
+                <a class="exercise-link" href="merry_mery_english_reported_speech_quiz.html">Reported Speech Quiz</a>
+            </li>
+            <li class="exercise-item">
+                <a class="exercise-link" href="merry_mery_english_the_little_prince_reading_comprehension.html">The Little Prince Reading</a>
+            </li>
+            <li class="exercise-item">
+                <a class="exercise-link" href="merry_mery_english_verb_mean_masterclass_quiz.html">Verb Mean Masterclass</a>
+            </li>
+            <li class="exercise-item">
+                <a class="exercise-link" href="dynamic_english_phrasal_verbs_master_game.html">Phrasal Verbs Master Game</a>
+            </li>
+        </ul>
+    </div>
 </body>
 </html>
