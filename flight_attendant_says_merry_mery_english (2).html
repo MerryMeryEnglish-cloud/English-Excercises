@@ -10,6 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <!-- Canvas Confetti Library for completion celebrations -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Plus Jakarta Sans & Fredoka for friendly Merry Mery look -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -25,6 +27,7 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: linear-gradient(135deg, #0b132b 0%, #1c2541 50%, #0b132b 100%);
             min-height: 100vh;
+            color: #f8fafc;
         }
 
         .font-brand {
@@ -34,1125 +37,481 @@
         .glass-card {
             background: rgba(28, 37, 65, 0.75);
             backdrop-filter: blur(14px);
-            border: 1px solid rgba(0, 168, 181, 0.25);
+            border: 1px solid rgba(0, 168, 181, 0.2);
         }
 
-        .window-frame {
-            border: 10px solid #1e293b;
-            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.7);
-            border-radius: 90px 90px 75px 75px;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-
-        .btn-teal {
-            background-color: var(--brand-teal);
-            color: #ffffff;
-            font-weight: 700;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f2b5c;
+            border-radius: 8px;
         }
-        .btn-teal:hover {
-            background-color: #008995;
-        }
-
-        .pulse-teal {
-            animation: pulse-teal 2s infinite;
-        }
-        @keyframes pulse-teal {
-            0% { box-shadow: 0 0 0 0 rgba(0, 168, 181, 0.6); }
-            70% { box-shadow: 0 0 0 14px rgba(0, 168, 181, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 168, 181, 0); }
-        }
-
-        .card-option-wrong {
-            border-color: #ef4444 !important;
-            background-color: rgba(127, 29, 29, 0.4) !important;
-            opacity: 0.6;
-        }
-
-        .card-option-correct {
-            border-color: #10b981 !important;
-            background-color: rgba(6, 78, 59, 0.6) !important;
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #00a8b5;
+            border-radius: 8px;
         }
     </style>
 </head>
-<body class="text-slate-100 flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen antialiased">
 
-    <!-- Top Navigation Header -->
-    <header class="bg-slate-900/90 border-b border-teal-500/30 sticky top-0 z-50 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between flex-wrap gap-3">
+    <!-- Top Header -->
+    <header class="glass-card border-b border-cyan-500/20 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
             
-            <!-- Merry Mery English Logo & Title -->
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('game')">
-                <div class="w-12 h-12 rounded-full border-2 border-teal-400 bg-white flex items-center justify-center p-0.5 shadow-md shadow-teal-500/20">
-                    <svg viewBox="0 0 200 200" class="w-full h-full">
-                        <circle cx="100" cy="100" r="92" fill="none" stroke="#00a8b5" stroke-width="10"/>
-                        <text x="100" y="70" text-anchor="middle" fill="#0f2b5c" font-family="'Fredoka', sans-serif" font-weight="700" font-size="34">Merry</text>
-                        <text x="100" y="108" text-anchor="middle" fill="#0f2b5c" font-family="'Fredoka', sans-serif" font-weight="700" font-size="34">Mery</text>
-                        <text x="100" y="152" text-anchor="middle" fill="#00a8b5" font-family="'Fredoka', sans-serif" font-weight="700" font-size="38">English</text>
-                        <path d="M 40 162 Q 100 178 160 162" stroke="#facc15" stroke-width="8" fill="none" stroke-linecap="round"/>
-                        <circle cx="152" cy="100" r="18" fill="#facc15"/>
-                        <path d="M 144 96 Q 152 106 160 96" stroke="#0f2b5c" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        <circle cx="147" cy="94" r="2" fill="#0f2b5c"/>
-                        <circle cx="157" cy="94" r="2" fill="#0f2b5c"/>
-                    </svg>
+            <!-- Branding -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full border-2 border-cyan-400 bg-slate-900 flex items-center justify-center shadow-md relative">
+                    <i class="fa-solid fa-plane-up text-cyan-400 text-xl"></i>
+                    <div class="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full border-2 border-slate-900 flex items-center justify-center text-slate-950 text-[10px]">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
                 </div>
                 <div>
-                    <h1 class="text-xl font-brand font-bold tracking-tight text-white flex items-center gap-2">
-                        Merry Mery <span class="text-teal-400">English</span>
+                    <h1 class="font-brand text-xl text-white tracking-wide flex items-center gap-2">
+                        <span>Cabin Crew Says</span>
+                        <span class="text-yellow-400 text-sm">✈️</span>
                     </h1>
-                    <p class="text-xs text-amber-300 font-semibold flex items-center gap-1">
-                        <span>🇬🇧</span> British Aviation English Simulator
-                    </p>
+                    <p class="text-xs font-semibold text-cyan-300">Merry Mery English • Aviation Simulator</p>
                 </div>
             </div>
 
-            <!-- Mode Switch Tabs -->
-            <nav class="flex space-x-1 bg-slate-800/90 p-1.5 rounded-xl border border-teal-500/20">
-                <button id="nav-game" onclick="switchTab('game')" class="px-3.5 py-2 text-xs font-bold rounded-lg transition-all bg-teal-500 text-slate-950 shadow">
-                    ✈️ "Cabin Crew Says" Game
-                </button>
-                <button id="nav-menu" onclick="switchTab('menu')" class="px-3.5 py-2 text-xs font-bold text-slate-300 hover:text-white rounded-lg transition-all">
-                    ☕ In-Flight Tea & Menu Game
-                </button>
-                <button id="nav-seat" onclick="switchTab('seat')" class="px-3.5 py-2 text-xs font-bold text-slate-300 hover:text-white rounded-lg transition-all">
-                    💺 Cabin Vocabulary & Quiz
-                </button>
-            </nav>
-
-            <!-- Score & Sound Controls -->
-            <div class="flex items-center space-x-3">
-                <button onclick="playCabinChime()" class="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-lg hover:bg-amber-500/30 transition-all">
-                    <span>🔔 Cabin Chime</span>
-                </button>
-                <div class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-xl text-center">
-                    <span class="text-[10px] text-slate-400 block uppercase font-bold">Total Score</span>
-                    <span id="score-display" class="text-base font-black text-amber-400">0 pts</span>
+            <!-- Stats / Actions -->
+            <div class="flex items-center gap-3">
+                <div class="bg-slate-900/80 border border-cyan-500/30 px-4 py-2 rounded-2xl flex items-center gap-3 shadow-inner">
+                    <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Mission Score:</span>
+                    <span id="score-counter" class="text-lg font-black text-cyan-400">0 / 10</span>
                 </div>
+                <button id="sound-btn" onclick="toggleSound()" class="p-2.5 rounded-xl bg-slate-900/80 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 transition shadow-sm" title="Toggle Sound">
+                    <i id="sound-icon" class="fa-solid fa-volume-high"></i>
+                </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow flex flex-col justify-center">
+    <!-- Main Content Workspace -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-6 space-y-6">
 
-        <!-- ================= SECTION 1: CABIN CREW SAYS GAME MODE ================= -->
-        <section id="section-game" class="space-y-6">
-            
-            <div id="game-main-panel" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                
-                <!-- Left Column: Cabin Crew Visual & Interactive Response Panel -->
-                <div class="lg:col-span-8 glass-card rounded-3xl p-5 md:p-8 flex flex-col justify-between relative overflow-hidden">
-                    
-                    <!-- Top Status Bar -->
-                    <div class="flex items-center justify-between border-b border-slate-700/60 pb-3 mb-4">
-                        <div class="flex items-center space-x-2">
-                            <span class="inline-block w-3 h-3 rounded-full bg-teal-400 animate-ping"></span>
-                            <span class="text-xs font-bold uppercase tracking-wider text-teal-300">🇬🇧 British Airways Style Service</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs text-slate-400">Card:</span>
-                            <span id="card-counter" class="text-xs font-bold text-teal-400">1 / 8</span>
-                        </div>
-                    </div>
-
-                    <!-- Center Cabin Crew Avatar & Announcement -->
-                    <div class="my-2 text-center flex flex-col items-center">
-                        
-                        <!-- Avatar -->
-                        <div id="avatar-container" class="relative mb-4 cursor-pointer group" onclick="speakCurrentPhrase()">
-                            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-slate-800 border-4 border-teal-400/60 p-2 shadow-xl flex items-center justify-center relative transition-transform transform group-hover:scale-105 pulse-teal">
-                                <span class="text-5xl md:text-6xl">👩‍✈️</span>
-                                <div class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-950 p-2 rounded-full shadow-lg">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-                                    </svg>
-                                </div>
-                            </div>
-                            <span class="text-xs text-teal-300 block font-medium mt-1">🔊 Click to hear Cabin Crew again</span>
-                        </div>
-
-                        <!-- Speech Bubble -->
-                        <div class="bg-slate-900/90 border border-teal-500/40 rounded-2xl p-5 max-w-2xl w-full shadow-2xl relative mb-4">
-                            <div class="text-[11px] font-extrabold text-amber-400 uppercase tracking-widest mb-1 flex items-center justify-center gap-1">
-                                <span>🇬🇧 Cabin Crew Announcement</span>
-                            </div>
-                            <p id="command-text" class="text-xl md:text-2xl font-extrabold text-white leading-relaxed">
-                                "Cabin Crew says: Please fasten your seatbelt!"
-                            </p>
-                        </div>
-
-                    </div>
-
-                    <!-- Options Container -->
-                    <div class="bg-slate-900/70 border border-slate-700/80 rounded-2xl p-4 my-2">
-                        <div class="mb-3 border-b border-slate-800 pb-2">
-                            <span class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1">
-                                🎯 Select the correct response or action:
-                            </span>
-                        </div>
-
-                        <!-- Options Grid -->
-                        <div id="response-select-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <!-- Populated dynamically via JS -->
-                        </div>
-
-                        <!-- Feedback Box -->
-                        <div id="feedback-box" class="hidden mt-3 p-3 rounded-xl border text-xs font-medium text-center transition-all">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-
-                    <!-- Bottom Navigation Controls -->
-                    <div class="pt-3 border-t border-slate-700/60 flex items-center justify-between">
-                        <span class="text-xs text-slate-400">Remember: If there's no "Cabin Crew says", it's a trick!</span>
-                        <button id="btn-next-card" onclick="nextCard()" disabled class="bg-slate-700 opacity-50 text-white font-bold py-2.5 px-5 rounded-xl transition-all text-xs flex items-center space-x-2 border border-slate-600">
-                            <span>➡️ Next Situation</span>
-                        </button>
-                    </div>
-
-                </div>
-
-                <!-- Right Column: Flight Window & Teacher Guidelines -->
-                <div class="lg:col-span-4 flex flex-col justify-between space-y-5">
-                    
-                    <!-- Flight Passenger Window Visual Frame -->
-                    <div class="glass-card rounded-3xl p-5 flex flex-col items-center justify-center text-center relative overflow-hidden bg-gradient-to-b from-sky-900/30 to-slate-900">
-                        <div class="w-28 h-38 window-frame bg-gradient-to-b from-sky-300 via-sky-200 to-indigo-950 relative flex items-center justify-center overflow-hidden mb-2">
-                            <div class="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
-                            <span class="text-3xl opacity-80 animate-bounce">☁️</span>
-                        </div>
-                        <h3 class="text-xs font-bold text-slate-200">London Heathrow Flight (BA-249)</h3>
-                        <p class="text-[11px] text-amber-300 font-semibold mt-0.5">Cruising at 38,000 ft</p>
-                    </div>
-
-                    <!-- British English Teacher Guide -->
-                    <div class="glass-card rounded-3xl p-5 border-l-4 border-amber-400">
-                        <h3 class="text-xs font-extrabold text-amber-300 mb-2 flex items-center">
-                            <span class="mr-1.5">🇬🇧</span> Teacher Rules & Hints
-                        </h3>
-                        <ul class="text-xs text-slate-300 space-y-1.5 list-disc pl-4 leading-relaxed">
-                            <li>Valid instructions start strictly with <b>"Cabin Crew says"</b>.</li>
-                            <li>If missing, it is a <b>TRICK CARD</b>! The student should choose <i>"Do nothing / Stay still"</i>.</li>
-                            <li>Multiple attempts are allowed until the student finds the right option.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Custom Command Creator for Teacher -->
-                    <div class="glass-card rounded-3xl p-4">
-                        <h4 class="text-xs font-bold text-slate-300 mb-2">➕ Add Custom Drill Card</h4>
-                        <div class="space-y-2">
-                            <input id="custom-command-input" type="text" placeholder="e.g. Put your bag in the overhead locker" class="w-full bg-slate-950 border border-slate-700 text-xs text-white rounded-lg p-2.5 focus:ring-2 focus:ring-teal-400 outline-none">
-                            <div class="flex items-center space-x-2">
-                                <label class="text-xs text-slate-400 flex items-center space-x-1 cursor-pointer">
-                                    <input id="custom-trick-checkbox" type="checkbox" class="rounded bg-slate-900 border-slate-700 text-teal-400">
-                                    <span>Is a Trick Card</span>
-                                </label>
-                                <button onclick="addCustomCommand()" class="ml-auto btn-teal px-3 py-1.5 rounded-lg text-xs transition-all">
-                                    Add Card
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
+        <!-- Intro Mission Card -->
+        <div class="glass-card p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-xs font-black uppercase tracking-wider text-slate-950 bg-yellow-400 px-3 py-1 rounded-full inline-flex items-center gap-1 shadow-sm font-brand">
+                    <i class="fa-solid fa-circle-exclamation"></i> Safety & Service Simulator
+                </span>
+                <h2 class="font-brand text-2xl text-white mt-2">Listen & Respond Correctly</h2>
+                <p class="text-slate-300 text-sm">You are an elite cabin crew member. Read or listen to the passenger/crew prompts and select the appropriate professional response.</p>
             </div>
-
-            <!-- Congratulations Celebration Screen (Hidden by default) -->
-            <div id="game-congrats-panel" class="hidden glass-card rounded-3xl p-8 text-center max-w-2xl mx-auto space-y-6">
-                <div class="text-6xl animate-bounce">🎉✈️</div>
-                <h2 id="game-congrats-title" class="text-3xl font-brand font-bold text-amber-300">Splendid Performance!</h2>
-                <p id="game-congrats-msg" class="text-base text-slate-200">
-                    You have completed all cabin crew commands!
-                </p>
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-teal-500/30 inline-block min-w-[200px]">
-                    <span class="text-xs text-slate-400 uppercase font-bold block">First Attempt Success</span>
-                    <span id="game-congrats-score" class="text-2xl font-extrabold text-teal-300">0 / 0</span>
-                </div>
-                <div class="flex justify-center gap-4 pt-2">
-                    <button onclick="restartGameRound()" class="btn-teal px-6 py-3 rounded-xl text-xs font-bold transition-all">
-                        🔄 Play Round Again
-                    </button>
-                    <button onclick="switchTab('menu')" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-6 py-3 rounded-xl text-xs font-bold transition-all">
-                        ☕ Try In-Flight Menu ➔
-                    </button>
-                </div>
+            <div class="flex items-center gap-2 flex-wrap w-full md:w-auto justify-end">
+                <button onclick="checkAllAnswers()" class="px-4 py-2.5 bg-cyan-500 hover:bg-cyan-600 text-slate-950 text-sm font-bold rounded-2xl transition shadow-md flex items-center gap-2 font-brand">
+                    <i class="fa-solid fa-check-double text-slate-950"></i> Verify All
+                </button>
+                <button onclick="resetSimulator()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 text-sm font-bold rounded-2xl border border-cyan-500/30 transition shadow-sm flex items-center gap-2 font-brand">
+                    <i class="fa-solid fa-rotate-right"></i> Reset
+                </button>
             </div>
+        </div>
 
-        </section>
-
-        <!-- ================= SECTION 2: IN-FLIGHT TEA & MENU PRACTICE ================= -->
-        <section id="section-menu" class="hidden space-y-6">
-            
-            <div id="menu-main-panel" class="glass-card rounded-3xl p-6 md:p-8">
-                
-                <div class="text-center max-w-2xl mx-auto mb-6">
-                    <span class="text-xs font-extrabold text-amber-300 uppercase tracking-widest bg-amber-950/80 px-3.5 py-1 rounded-full border border-amber-600/40">
-                        🇬🇧 Interactive Menu Challenge
-                    </span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold mt-3 text-white font-brand">
-                        In-Flight Catering & Beverage Game
-                    </h2>
-                    <p class="text-xs md:text-sm text-slate-300 mt-2">
-                        Listen to the Cabin Crew or Passenger order, then select the matching image card below!
-                    </p>
-                </div>
-
-                <!-- Menu Question Box -->
-                <div class="bg-slate-900/90 border border-teal-500/40 rounded-2xl p-5 max-w-2xl mx-auto text-center mb-6 shadow-xl relative">
-                    <div class="flex items-center justify-between text-xs text-teal-400 font-bold mb-2">
-                        <span>Question <span id="menu-counter">1 / 5</span></span>
-                        <button onclick="playCurrentMenuAudio()" class="text-amber-300 hover:underline flex items-center gap-1">
-                            🔊 Replay Voice
-                        </button>
-                    </div>
-                    <p id="menu-prompt-text" class="text-lg md:text-xl font-bold text-white">
-                        "Would you like a cup of English tea with milk, or coffee?"
-                    </p>
-                </div>
-
-                <!-- Interactive Visual Options Cards Grid -->
-                <div id="menu-items-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                    <!-- Cards dynamically rendered in JS -->
-                </div>
-
-                <!-- Feedback Box -->
-                <div id="menu-feedback-box" class="hidden max-w-2xl mx-auto mt-4 p-3 rounded-xl border text-xs font-bold text-center transition-all">
-                    <!-- Populated by JS -->
-                </div>
-
-                <!-- Navigation Controls -->
-                <div class="max-w-4xl mx-auto mt-6 pt-4 border-t border-slate-700/60 flex justify-between items-center">
-                    <span class="text-xs text-slate-400">Select the correct item card. Incorrect choices will let you try again!</span>
-                    <button id="btn-next-menu" onclick="nextMenuQuestion()" disabled class="bg-slate-700 opacity-50 text-white font-bold py-2.5 px-5 rounded-xl transition-all text-xs border border-slate-600">
-                        ➡️ Next Order
-                    </button>
-                </div>
-
+        <!-- Progress Tracker -->
+        <div class="glass-card p-4 rounded-2xl shadow-sm flex items-center gap-4">
+            <span class="text-xs font-black text-cyan-300 uppercase tracking-wider shrink-0 font-brand">Flight Progress:</span>
+            <div class="w-full bg-slate-900 h-3 rounded-full overflow-hidden border border-cyan-500/20">
+                <div id="progress-bar" class="bg-gradient-to-r from-cyan-500 to-yellow-400 h-full transition-all duration-300 w-0"></div>
             </div>
+            <span id="progress-text" class="text-xs font-black text-cyan-300 shrink-0 font-brand">0/10 Completed</span>
+        </div>
 
-            <!-- Menu Round Celebration Screen -->
-            <div id="menu-congrats-panel" class="hidden glass-card rounded-3xl p-8 text-center max-w-2xl mx-auto space-y-6">
-                <div class="text-6xl animate-bounce">☕🍰✈️</div>
-                <h2 id="menu-congrats-title" class="text-3xl font-brand font-bold text-amber-300">Marvellous In-Flight Service!</h2>
-                <p id="menu-congrats-msg" class="text-base text-slate-200">
-                    You have successfully matched all cabin food & beverage requests!
-                </p>
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-teal-500/30 inline-block min-w-[200px]">
-                    <span class="text-xs text-slate-400 uppercase font-bold block">First Try Accuracy</span>
-                    <span id="menu-congrats-score" class="text-2xl font-extrabold text-teal-300">100%</span>
-                </div>
-                <div class="flex justify-center gap-4 pt-2">
-                    <button onclick="restartMenuRound()" class="btn-teal px-6 py-3 rounded-xl text-xs font-bold transition-all">
-                        🔄 Replay Menu Game
-                    </button>
-                    <button onclick="switchTab('seat')" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-6 py-3 rounded-xl text-xs font-bold transition-all">
-                        💺 Cabin Vocabulary ➔
-                    </button>
-                </div>
+        <!-- Questions Container -->
+        <div id="simulator-questions" class="space-y-6">
+            <!-- Dynamically injected items -->
+        </div>
+
+        <!-- Completion Banner -->
+        <div id="completion-banner" class="hidden glass-card border-2 border-yellow-400 p-8 rounded-3xl text-center space-y-4 shadow-2xl relative overflow-hidden">
+            <div class="w-16 h-16 bg-yellow-400 text-slate-950 rounded-full flex items-center justify-center mx-auto text-3xl shadow-lg border-4 border-slate-900 animate-bounce">
+                <i class="fa-solid fa-award"></i>
             </div>
-
-        </section>
-
-        <!-- ================= SECTION 3: CABIN VOCABULARY EXPLORER & QUIZ ================= -->
-        <section id="section-seat" class="hidden space-y-6">
-            
-            <div id="vocab-main-panel" class="glass-card rounded-3xl p-6 md:p-8">
-                
-                <div class="text-center max-w-2xl mx-auto mb-8">
-                    <span class="text-xs font-extrabold text-teal-300 uppercase tracking-widest bg-slate-900 px-3.5 py-1 rounded-full border border-teal-500/30">
-                        🇬🇧 Visual Vocabulary & Listening Challenge
-                    </span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold mt-3 text-white font-brand">
-                        Airplane Cabin Vocabulary
-                    </h2>
-                    <p class="text-xs md:text-sm text-slate-300 mt-2">
-                        Review key cabin terms and example sentences, then complete the Cabin Listening Quiz!
-                    </p>
-                </div>
-
-                <!-- Vocabulary Cards Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                    
-                    <div onclick="speakCabinPart('Seatbelt', 'Please fasten your seatbelt securely around your waist.')" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-teal-400 transition-all cursor-pointer group relative">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-3xl">🔒</span>
-                            <span class="text-[10px] bg-teal-950 text-teal-300 px-2 py-0.5 rounded border border-teal-500/40">Listen 🔊</span>
-                        </div>
-                        <h3 class="text-base font-bold text-teal-300">Seatbelt</h3>
-                        <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 mt-2">
-                            <p class="text-xs text-amber-300 font-semibold">"Please fasten your seatbelt securely around your waist."</p>
-                        </div>
-                    </div>
-
-                    <div onclick="speakCabinPart('Tray Table', 'Kindly fold up your tray table for landing.')" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-teal-400 transition-all cursor-pointer group relative">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-3xl">🍽️</span>
-                            <span class="text-[10px] bg-teal-950 text-teal-300 px-2 py-0.5 rounded border border-teal-500/40">Listen 🔊</span>
-                        </div>
-                        <h3 class="text-base font-bold text-teal-300">Tray Table</h3>
-                        <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 mt-2">
-                            <p class="text-xs text-amber-300 font-semibold">"Kindly fold up your tray table for landing."</p>
-                        </div>
-                    </div>
-
-                    <div onclick="speakCabinPart('Window Blind', 'Please raise your window blind for takeoff and landing.')" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-teal-400 transition-all cursor-pointer group relative">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-3xl">🪟</span>
-                            <span class="text-[10px] bg-teal-950 text-teal-300 px-2 py-0.5 rounded border border-teal-500/40">Listen 🔊</span>
-                        </div>
-                        <h3 class="text-base font-bold text-teal-300">Window Blind</h3>
-                        <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 mt-2">
-                            <p class="text-xs text-amber-300 font-semibold">"Please raise your window blind for takeoff and landing."</p>
-                        </div>
-                    </div>
-
-                    <div onclick="speakCabinPart('Overhead Locker', 'Please stow your hand luggage in the overhead locker.')" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-teal-400 transition-all cursor-pointer group relative">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-3xl">🧳</span>
-                            <span class="text-[10px] bg-teal-950 text-teal-300 px-2 py-0.5 rounded border border-teal-500/40">Listen 🔊</span>
-                        </div>
-                        <h3 class="text-base font-bold text-teal-300">Overhead Locker</h3>
-                        <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 mt-2">
-                            <p class="text-xs text-amber-300 font-semibold">"Please stow your hand luggage in the overhead locker."</p>
-                        </div>
-                    </div>
-
-                    <div onclick="speakCabinPart('Recline Button', 'Could you bring your seat to the upright position, please?')" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-teal-400 transition-all cursor-pointer group relative">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-3xl">💺</span>
-                            <span class="text-[10px] bg-teal-950 text-teal-300 px-2 py-0.5 rounded border border-teal-500/40">Listen 🔊</span>
-                        </div>
-                        <h3 class="text-base font-bold text-teal-300">Recline Button</h3>
-                        <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 mt-2">
-                            <p class="text-xs text-amber-300 font-semibold">"Could you bring your seat to the upright position, please?"</p>
-                        </div>
-                    </div>
-
-                    <div onclick="speakCabinPart('Call Bell', 'Press the call bell if you require assistance from the cabin crew.')" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 hover:border-teal-400 transition-all cursor-pointer group relative">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-3xl">🔔</span>
-                            <span class="text-[10px] bg-teal-950 text-teal-300 px-2 py-0.5 rounded border border-teal-500/40">Listen 🔊</span>
-                        </div>
-                        <h3 class="text-base font-bold text-teal-300">Call Bell</h3>
-                        <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 mt-2">
-                            <p class="text-xs text-amber-300 font-semibold">"Press the call bell if you require assistance from the cabin crew."</p>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Interactive Listening Quiz Banner -->
-                <div class="bg-slate-900/90 border border-amber-500/40 rounded-2xl p-6 relative">
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-                        <h3 class="text-base font-bold text-amber-300 flex items-center gap-2">
-                            <span>🎧</span> Cabin Crew Listening Challenge
-                        </h3>
-                        <span id="vocab-quiz-counter" class="text-xs font-bold text-teal-400">1 / 4</span>
-                    </div>
-
-                    <div class="text-center mb-4">
-                        <p class="text-xs text-slate-400 mb-1">Click to play what the Cabin Crew is saying:</p>
-                        <button onclick="playVocabQuizVoice()" class="btn-teal px-5 py-2.5 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-2">
-                            <span>🔊 Listen Announcement</span>
-                        </button>
-                    </div>
-
-                    <!-- Quiz Options List -->
-                    <div id="vocab-quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-3xl mx-auto">
-                        <!-- Options generated in JS -->
-                    </div>
-
-                    <div id="vocab-feedback-box" class="hidden mt-4 p-3 rounded-xl border text-xs font-bold text-center transition-all">
-                        <!-- Feedback -->
-                    </div>
-
-                    <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end">
-                        <button id="btn-next-vocab-quiz" onclick="nextVocabQuizQuestion()" disabled class="bg-slate-700 opacity-50 text-white font-bold py-2 px-4 rounded-xl text-xs border border-slate-600">
-                            Next Challenge ➔
-                        </button>
-                    </div>
-                </div>
-
+            <h3 id="banner-title" class="font-brand text-3xl text-white">🎉 Flight Successfully Completed! 🎉</h3>
+            <p id="banner-subtitle" class="text-cyan-200 text-base max-w-md mx-auto font-medium">
+                Outstanding work, Crew Member! You've mastered aviation phraseology and passenger communication.
+            </p>
+            <div class="flex justify-center gap-3 pt-2">
+                <button onclick="resetSimulator()" class="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-black rounded-2xl shadow-lg transition flex items-center gap-2 font-brand">
+                    <i class="fa-solid fa-rotate-right"></i> Run Simulation Again
+                </button>
             </div>
-
-            <!-- Vocab Quiz Celebration Screen -->
-            <div id="vocab-congrats-panel" class="hidden glass-card rounded-3xl p-8 text-center max-w-2xl mx-auto space-y-6">
-                <div class="text-6xl animate-bounce">🏆⭐</div>
-                <h2 id="vocab-congrats-title" class="text-3xl font-brand font-bold text-amber-300">Vocabulary Mastered!</h2>
-                <p id="vocab-congrats-msg" class="text-base text-slate-200">
-                    You have successfully passed the cabin crew listening challenge!
-                </p>
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-teal-500/30 inline-block min-w-[200px]">
-                    <span class="text-xs text-slate-400 uppercase font-bold block">First Attempt Score</span>
-                    <span id="vocab-congrats-score" class="text-2xl font-extrabold text-teal-300">100%</span>
-                </div>
-                <div class="flex justify-center gap-4 pt-2">
-                    <button onclick="restartVocabRound()" class="btn-teal px-6 py-3 rounded-xl text-xs font-bold transition-all">
-                        🔄 Practice Vocabulary Again
-                    </button>
-                    <button onclick="switchTab('game')" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-6 py-3 rounded-xl text-xs font-bold transition-all">
-                        ✈️ Play Crew Game Again ➔
-                    </button>
-                </div>
-            </div>
-
-        </section>
+        </div>
 
     </main>
 
     <script>
-        // ================= GAME 1 DATA & LOGIC =================
-        let cards = [
+        // --- SIMULATOR DATASET (Aviation English A2/B1) ---
+        const MISSION_DATA = [
             {
-                command: "Cabin Crew says: Please fasten your seatbelt securely!",
+                id: 1,
+                prompt: "Please, could you put my heavy suitcase in the overhead bin?",
+                context: "Passenger speaking during boarding.",
                 options: [
-                    "Fasten seatbelt / 'Yes, of course!'",
-                    "Do nothing / Stay still",
-                    "Ask for a cup of tea",
-                    "Open overhead locker"
+                    { letter: "a", text: "Certainly, let me assist you with that bag right away." },
+                    { letter: "b", text: "No, you must carry it yourself." }
                 ],
-                correctIndex: 0,
-                isTrick: false,
-                explanation: "Splendid! 'Cabin Crew says' was used, so compliance is required."
+                correct: 0,
+                explanation: "Cabin crew should always offer polite, helpful service using courteous modals like 'let me assist you'."
             },
             {
-                command: "Cabin Crew says: Please raise your window blind for landing!",
+                id: 2,
+                prompt: "Fasten your seatbelt securely and return your tray table to its upright position.",
+                context: "Cabin announcement before takeoff.",
                 options: [
-                    "Pull up window blind / 'I will raise it now.'",
-                    "Do nothing / Stay still",
-                    "Fold up tray table",
-                    "Unbuckle seatbelt"
+                    { letter: "a", text: "We are preparing for takeoff and final cabin secure check." },
+                    { letter: "b", text: "We are landing at the terminal gate now." }
                 ],
-                correctIndex: 0,
-                isTrick: false,
-                explanation: "Spot on! 'Cabin Crew says' is an official instruction."
+                correct: 0,
+                explanation: "Seatbelts and tray tables are secured during takeoff and landing preparations."
             },
             {
-                command: "Put your seat in the upright position!",
+                id: 3,
+                prompt: "Excuse me, I feel a bit dizzy and short of breath.",
+                context: "Passenger feeling unwell mid-flight.",
                 options: [
-                    "Return seat to upright position",
-                    "Do nothing! (TRICK CARD - Missing prefix)",
-                    "Say 'Thank you very much'",
-                    "Stand up in aisle"
+                    { letter: "a", text: "I'll bring you a glass of water immediately and inform the purser." },
+                    { letter: "b", text: "Please open the emergency exit window for fresh air." }
                 ],
-                correctIndex: 1,
-                isTrick: true,
-                explanation: "Brilliant! This was a TRICK! No 'Cabin Crew says' prefix was included."
+                correct: 0,
+                explanation: "Medical discomfort requires immediate crew assistance and notification of senior crew/purser; never open exits."
             },
             {
-                command: "Cabin Crew says: Place your cabin bag in the overhead locker!",
+                id: 4,
+                prompt: "May I have a vegetarian meal option for lunch?",
+                context: "Meal service in economy class.",
                 options: [
-                    "Stow bag in overhead locker",
-                    "Do nothing / Stay still",
-                    "Fold down tray table",
-                    "Turn on reading light"
+                    { letter: "a", text: "Certainly, let me check our special meal cart for your reservation." },
+                    { letter: "b", text: "We don't serve food on international flights." }
                 ],
-                correctIndex: 0,
-                isTrick: false,
-                explanation: "Top job! Notice the British aviation term 'overhead locker'."
+                correct: 0,
+                explanation: "Special dietary requirements are checked politely against passenger manifests."
             },
             {
-                command: "Fancy a cup of tea or coffee?",
+                id: 5,
+                prompt: "The pilot has turned on the Fasten Seatbelt sign due to turbulence.",
+                context: "In-flight safety protocol.",
                 options: [
-                    "I'd love a cup of white tea, please.",
-                    "Do nothing / Stay quiet! (TRICK CARD)",
-                    "Fasten my seatbelt",
-                    "Recline my seat"
+                    { letter: "a", text: "Passengers must return to their seats and remain buckled up." },
+                    { letter: "b", text: "Everyone is free to walk around the cabin aisles." }
                 ],
-                correctIndex: 1,
-                isTrick: true,
-                explanation: "Well spotted! TRICK CARD! Although polite, the prefix 'Cabin Crew says' was missing!"
+                correct: 0,
+                explanation: "Turbulence safety protocols require all passengers to be seated with seatbelts fastened."
             },
             {
-                command: "Cabin Crew says: Please fold up your tray table!",
+                id: 6,
+                prompt: "Where is my connecting gate for flight BA1245?",
+                context: "Passenger arriving at the hub airport.",
                 options: [
-                    "Fold up tray table / 'Certainly!'",
-                    "Do nothing / Stay still",
-                    "Take off shoes",
-                    "Press call bell"
+                    { letter: "a", text: "You can check the airport monitors or ask ground staff at arrival." },
+                    { letter: "b", text: "Stay inside this lavatory until departure." }
                 ],
-                correctIndex: 0,
-                isTrick: false,
-                explanation: "Jolly good! You followed the valid cabin instruction."
+                correct: 0,
+                explanation: "Gate connections are verified via airport flight info displays or ground personnel."
             },
             {
-                command: "Cabin Crew says: Switch off all electronic devices!",
+                id: 7,
+                prompt: "Can I use my laptop during taxi and takeoff?",
+                context: "Electronic devices policy query.",
                 options: [
-                    "Switch off phone / 'Of course!'",
-                    "Do nothing / Stay still",
-                    "Ask for chicken curry",
-                    "Put on blanket"
+                    { letter: "a", text: "Large electronic devices must be stowed securely for takeoff." },
+                    { letter: "b", text: "Yes, you can plug it into the engine turbine." }
                 ],
-                correctIndex: 0,
-                isTrick: false,
-                explanation: "Correct! Device safety compliance is mandatory when requested."
+                correct: 0,
+                explanation: "Large electronic devices must be stowed during critical phases of flight (taxi, takeoff, landing)."
             },
             {
-                command: "Hand over any rubbish, please!",
+                id: 8,
+                prompt: "Excuse me, my entertainment screen is frozen.",
+                context: "In-flight entertainment troubleshooting.",
                 options: [
-                    "Hand over rubbish to cabin crew member",
-                    "Do nothing! (TRICK CARD - Missing prefix)",
-                    "Put on headphones",
-                    "Lower window shade"
+                    { letter: "a", text: "Let me reset your system console right now. Sorry for the inconvenience." },
+                    { letter: "b", text: "Please punch the screen firmly to fix it." }
                 ],
-                correctIndex: 1,
-                isTrick: true,
-                explanation: "Spot on! TRICK! 'Rubbish' is British for trash, but the 'Cabin Crew says' prefix was missing."
+                correct: 0,
+                explanation: "Crew members provide professional troubleshooting and apologize for technical glitches."
+            },
+            {
+                id: 9,
+                prompt: "We are now commencing our descent into London Heathrow.",
+                context: "Preparation for landing announcement.",
+                options: [
+                    { letter: "a", text: "Cabin crew, please secure the cabin and prepare for landing." },
+                    { letter: "b", text: "Passengers, please open your parachutes." }
+                ],
+                correct: 0,
+                explanation: "Standard operational call for cabin crew to prepare the aircraft cabin for arrival."
+            },
+            {
+                id: 10,
+                prompt: "Thank you for flying with our airline today.",
+                context: "Disembarking at the destination gate.",
+                options: [
+                    { letter: "a", text: "Have a wonderful stay or safe journey onward!" },
+                    { letter: "b", text: "Don't ever fly with us again." }
+                ],
+                correct: 0,
+                explanation: "Polite farewell wishes conclude the passenger service journey warmly."
             }
         ];
 
-        let currentIndex = 0;
-        let score = 0;
-        let gameFirstAttemptsCorrect = 0;
-        let gameHasMadeMistakeOnCurrentCard = false;
+        let userSelections = new Array(MISSION_DATA.length).fill(null);
+        let checkedState = new Array(MISSION_DATA.length).fill(false);
+        let soundEnabled = true;
 
-        // ================= GAME 2 DATA (MENU) =================
-        let menuQuestions = [
-            {
-                prompt: "Would you like a cup of English tea with milk?",
-                audioText: "Would you like a cup of English tea with milk?",
-                correctItemId: "tea",
-                explanation: "Correct! That's a classic British cup of tea with milk (white tea)."
-            },
-            {
-                prompt: "Can I offer you a fresh orange juice?",
-                audioText: "Can I offer you a fresh orange juice?",
-                correctItemId: "juice",
-                explanation: "Splendid! Fresh orange juice."
-            },
-            {
-                prompt: "Would you prefer the roast chicken or vegetarian pasta?",
-                audioText: "Would you prefer the roast chicken or vegetarian pasta?",
-                correctItemId: ["chicken", "pasta"],
-                explanation: "Top choice! Both the roast chicken and vegetarian pasta are delicious in-flight meal options."
-            },
-            {
-                prompt: "Would you care for a black coffee with two sugars?",
-                audioText: "Would you care for a black coffee with two sugars?",
-                correctItemId: "coffee",
-                explanation: "Right on! Hot black coffee."
-            },
-            {
-                prompt: "Excuse me, could I have some still mineral water, please?",
-                audioText: "Excuse me, could I have some still mineral water, please?",
-                correctItemId: "water",
-                explanation: "Refreshing! Still mineral water with lemon."
-            }
-        ];
+        function renderSimulator() {
+            const container = document.getElementById('simulator-questions');
+            container.innerHTML = '';
 
-        let menuItemsList = [
-            { id: "tea", name: "English Tea (with milk)", icon: "☕" },
-            { id: "coffee", name: "Black Coffee", icon: "☕" },
-            { id: "juice", name: "Orange Juice", icon: "🍊" },
-            { id: "water", name: "Still Water", icon: "💧" },
-            { id: "chicken", name: "Roast Chicken", icon: "🍗" },
-            { id: "pasta", name: "Penne Pasta", icon: "🍝" },
-            { id: "question", name: "Pardon? / What?", icon: "❓" }
-        ];
+            MISSION_DATA.forEach((item, qIdx) => {
+                const isChecked = checkedState[qIdx];
+                const selectedOpt = userSelections[qIdx];
+                const isCorrect = selectedOpt !== null && selectedOpt === item.correct;
 
-        let currentMenuIndex = 0;
-        let menuFirstAttemptsCorrect = 0;
-        let menuHasMadeMistake = false;
+                const card = document.createElement('div');
+                card.className = `glass-card p-6 rounded-3xl transition-all space-y-4 ${
+                    isChecked 
+                        ? (isCorrect ? 'border-emerald-500/50 bg-emerald-950/20' : 'border-rose-500/50 bg-rose-950/20')
+                        : 'border-cyan-500/20 hover:border-cyan-500/50'
+                }`;
 
-        // ================= GAME 3 DATA (VOCAB QUIZ) =================
-        let vocabQuizQuestions = [
-            {
-                audioText: "Please stow your hand luggage in the overhead locker.",
-                options: [
-                    "Overhead Locker: Stow hand luggage",
-                    "Seatbelt: Fasten securely",
-                    "Tray Table: Fold down for meal",
-                    "Window Blind: Lower for rest"
-                ],
-                correctIndex: 0,
-                explanation: "Correct! 'Overhead locker' is British for overhead storage bin."
-            },
-            {
-                audioText: "Kindly fold up your tray table for landing.",
-                options: [
-                    "Recline Button: Adjust seat",
-                    "Tray Table: Fold up for landing",
-                    "Call Bell: Press for help",
-                    "Seatbelt: Unbuckle"
-                ],
-                correctIndex: 1,
-                explanation: "Spot on! Tray tables must be folded away for safety."
-            },
-            {
-                audioText: "Please raise your window blind for takeoff.",
-                options: [
-                    "Overhead Locker: Close bin",
-                    "Window Blind: Raise for takeoff",
-                    "Tray Table: Clean table",
-                    "Call Bell: Call attendant"
-                ],
-                correctIndex: 1,
-                explanation: "Marvellous! Window blinds stay open for takeoff and landing."
-            },
-            {
-                audioText: "Could you bring your seat to the upright position, please?",
-                options: [
-                    "Seatbelt: Fasten belt",
-                    "Recline / Upright: Return seat to upright position",
-                    "Window Blind: Lower blind",
-                    "Call Bell: Press ring"
-                ],
-                correctIndex: 1,
-                explanation: "Splendid! Seats must be upright during critical flight phases."
-            }
-        ];
+                // Header with audio button
+                const header = document.createElement('div');
+                header.className = "flex items-start justify-between gap-3";
+                header.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-brand font-black text-sm flex items-center justify-center shrink-0 mt-0.5">
+                            ${qIdx + 1}
+                        </span>
+                        <div>
+                            <span class="text-xs font-bold text-yellow-400 uppercase tracking-wide block mb-1">${item.context}</span>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base md:text-lg font-bold text-white leading-snug">
+                                    "${item.prompt}"
+                                </h3>
+                                <button onclick="speakText('${item.prompt.replace(/'/g, "\\'")}')" class="p-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 transition text-xs border border-cyan-500/30" title="Listen to prompt">
+                                    <i class="fa-solid fa-volume-high"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    ${isChecked ? (
+                        isCorrect 
+                            ? `<span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-black flex items-center gap-1 border border-emerald-500/30 shrink-0 font-brand"><i class="fa-solid fa-circle-check"></i> Correct</span>`
+                            : `<span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-black flex items-center gap-1 border border-rose-500/30 shrink-0 font-brand"><i class="fa-solid fa-circle-xmark"></i> ${selectedOpt === null ? 'Pending' : 'Incorrect'}</span>`
+                    ) : ''}
+                `;
+                card.appendChild(header);
 
-        let currentVocabQuizIndex = 0;
-        let vocabFirstAttemptsCorrect = 0;
-        let vocabHasMadeMistake = false;
+                // Options grid
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = "grid grid-cols-1 md:grid-cols-2 gap-3 pt-2";
 
-        // Audio synthesis setup
-        function playCabinChime() {
-            try {
-                if (Tone.context.state !== 'running') {
-                    Tone.start();
+                item.options.forEach((opt, oIdx) => {
+                    const isSelected = selectedOpt === oIdx;
+                    const isThisOptionCorrect = item.correct === oIdx;
+
+                    const optBtn = document.createElement('button');
+                    optBtn.type = "button";
+                    optBtn.onclick = () => selectOption(qIdx, oIdx);
+
+                    let btnStyle = "w-full p-4 rounded-2xl border transition flex items-center gap-3 text-left font-semibold text-sm shadow-sm ";
+                    let circleStyle = "w-8 h-8 rounded-full border flex items-center justify-center font-brand font-black text-xs shrink-0 transition-all ";
+
+                    if (isChecked) {
+                        if (isThisOptionCorrect) {
+                            btnStyle += "border-emerald-500 bg-emerald-900/40 text-emerald-100 cursor-default";
+                            circleStyle += "border-emerald-400 bg-emerald-500 text-slate-950";
+                        } else if (isSelected && !isCorrect) {
+                            btnStyle += "border-rose-500 bg-rose-900/40 text-rose-100 cursor-default";
+                            circleStyle += "border-rose-400 bg-rose-500 text-white";
+                        } else {
+                            btnStyle += "border-slate-800 bg-slate-900/40 text-slate-500 cursor-default";
+                            circleStyle += "border-slate-700 bg-slate-800 text-slate-500";
+                        }
+                    } else {
+                        if (isSelected) {
+                            btnStyle += "border-cyan-400 bg-cyan-500/20 text-white shadow-md";
+                            circleStyle += "border-cyan-400 bg-cyan-500 text-slate-950";
+                        } else {
+                            btnStyle += "border-cyan-500/20 bg-slate-900/60 hover:border-cyan-500/50 hover:bg-cyan-500/10 text-slate-200";
+                            circleStyle += "border-cyan-500/40 bg-slate-900 text-cyan-300";
+                        }
+                    }
+
+                    optBtn.className = btnStyle;
+                    optBtn.innerHTML = `
+                        <div class="${circleStyle}">${opt.letter.toUpperCase()}</div>
+                        <span class="flex-1">${opt.text}</span>
+                        ${isSelected ? '<i class="fa-solid fa-circle-dot text-cyan-400"></i>' : '<i class="fa-regular fa-circle text-slate-600"></i>'}
+                    `;
+
+                    if (isChecked) optBtn.disabled = true;
+                    optionsGrid.appendChild(optBtn);
+                });
+
+                card.appendChild(optionsGrid);
+
+                // Explanation block if checked
+                if (isChecked && !isCorrect) {
+                    const expBox = document.createElement('div');
+                    expBox.className = "p-4 rounded-2xl bg-rose-950/30 border border-rose-500/30 text-xs md:text-sm text-rose-200 space-y-2 mt-2";
+                    expBox.innerHTML = `
+                        <div class="flex items-center gap-2 font-brand font-bold text-rose-300">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Crew Protocol Feedback${selectedOpt === null ? ' (Unanswered)' : ''}:</span>
+                        </div>
+                        <p class="font-medium leading-relaxed">${item.explanation}</p>
+                        <div class="pt-1 flex items-center gap-1.5 font-bold text-emerald-300 bg-emerald-950/40 px-3 py-1.5 rounded-xl border border-emerald-500/30 w-fit">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Correct Response: <strong>(${item.options[item.correct].letter.toUpperCase()}) ${item.options[item.correct].text}</strong></span>
+                        </div>
+                    `;
+                    card.appendChild(expBox);
+                } else if (isChecked && isCorrect) {
+                    const expBox = document.createElement('div');
+                    expBox.className = "p-3 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 text-xs md:text-sm text-emerald-200 flex items-center gap-2 mt-2 font-bold";
+                    expBox.innerHTML = `
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                        <span>Excellent professional response! Protocol followed correctly.</span>
+                    `;
+                    card.appendChild(expBox);
                 }
-                const synth = new Tone.PolySynth().toDestination();
-                const now = Tone.now();
-                synth.triggerAttackRelease(["F4", "A4"], "8n", now);
-                synth.triggerAttackRelease(["C4", "F4"], "4n", now + 0.35);
-            } catch (e) {
-                console.log("Audio chime fallback");
+
+                container.appendChild(card);
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(qIdx, oIdx) {
+            if (checkedState[qIdx]) return;
+            userSelections[qIdx] = oIdx;
+            checkedState[qIdx] = true;
+
+            const isCorrect = userSelections[qIdx] === MISSION_DATA[qIdx].correct;
+            playChime(isCorrect ? 'correct' : 'wrong');
+
+            renderSimulator();
+            checkOverallCompletion();
+        }
+
+        function checkAllAnswers() {
+            let newlyChecked = false;
+            MISSION_DATA.forEach((_, idx) => {
+                if (!checkedState[idx]) newlyChecked = true;
+                checkedState[idx] = true;
+            });
+
+            renderSimulator();
+            checkOverallCompletion();
+            if (newlyChecked) playChime('correct');
+        }
+
+        function resetSimulator() {
+            userSelections = new Array(MISSION_DATA.length).fill(null);
+            checkedState = new Array(MISSION_DATA.length).fill(false);
+            document.getElementById('completion-banner').classList.add('hidden');
+            renderSimulator();
+        }
+
+        function updateProgress() {
+            const answeredCount = userSelections.filter(s => s !== null).length;
+            let scoreCount = 0;
+
+            userSelections.forEach((sel, idx) => {
+                if (sel !== null && checkedState[idx] && sel === MISSION_DATA[idx].correct) {
+                    scoreCount++;
+                }
+            });
+
+            document.getElementById('score-counter').textContent = `${scoreCount} / ${MISSION_DATA.length}`;
+            document.getElementById('progress-text').textContent = `${answeredCount}/10 Completed`;
+            
+            const pct = (answeredCount / MISSION_DATA.length) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+        }
+
+        function checkOverallCompletion() {
+            const allChecked = checkedState.every(c => c === true);
+
+            if (allChecked) {
+                let score = 0;
+                userSelections.forEach((sel, idx) => {
+                    if (sel !== null && sel === MISSION_DATA[idx].correct) score++;
+                });
+
+                const banner = document.getElementById('completion-banner');
+                const title = document.getElementById('banner-title');
+                const subtitle = document.getElementById('banner-subtitle');
+
+                if (score >= 8) {
+                    title.textContent = `🎉 Captain Level Performance! (${score}/10) 🎉`;
+                    subtitle.textContent = "Outstanding service! You represent the pinnacle of professional aviation hospitality.";
+                } else {
+                    title.textContent = `✈️ Mission Completed (${score}/10) ✈️`;
+                    subtitle.textContent = "Good effort! Review the feedback protocols to achieve full cabin crew certification.";
+                }
+
+                banner.classList.remove('hidden');
+                triggerConfetti();
+                playChime('complete');
+
+                setTimeout(() => {
+                    banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 150);
             }
         }
 
-        function playSuccessSound() {
-            try {
-                const synth = new Tone.Synth().toDestination();
-                synth.triggerAttackRelease("C5", "8n");
-            } catch (e){}
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            icon.className = soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark text-slate-500';
         }
 
-        function playErrorSound() {
+        // Text-to-Speech only triggered manually by user clicking the speaker button
+        function speakText(text) {
+            if (!soundEnabled || !('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.95;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Tone.js audio feedback helper
+        function playChime(type) {
+            if (!soundEnabled) return;
             try {
                 const synth = new Tone.Synth().toDestination();
-                synth.triggerAttackRelease("G3", "8n");
-            } catch (e){}
+                if (type === 'correct') {
+                    synth.triggerAttackRelease("C5", "8n");
+                } else if (type === 'wrong') {
+                    synth.triggerAttackRelease("G3", "8n");
+                } else if (type === 'complete') {
+                    const now = Tone.now();
+                    synth.triggerAttackRelease("C5", "8n", now);
+                    synth.triggerAttackRelease("E5", "8n", now + 0.15);
+                    synth.triggerAttackRelease("G5", "8n", now + 0.3);
+                }
+            } catch (e) {}
         }
 
         function triggerConfetti() {
             if (typeof confetti === 'function') {
                 confetti({
-                    particleCount: 120,
+                    particleCount: 90,
                     spread: 80,
                     origin: { y: 0.6 }
                 });
             }
         }
 
-        function speakText(text) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-GB';
-                utterance.rate = 0.88;
-                utterance.pitch = 1.0;
-
-                const voices = window.speechSynthesis.getVoices();
-                const ukVoice = voices.find(v => v.lang === 'en-GB' || v.name.includes('UK') || v.name.includes('British') || v.name.includes('Hazel') || v.name.includes('Daniel') || v.name.includes('Oliver'));
-                if (ukVoice) {
-                    utterance.voice = ukVoice;
-                }
-
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // ================= SECTION 1 CODE =================
-        function renderCard() {
-            const card = cards[currentIndex];
-            gameHasMadeMistakeOnCurrentCard = false;
-
-            document.getElementById('command-text').innerText = `"${card.command}"`;
-            document.getElementById('card-counter').innerText = `${currentIndex + 1} / ${cards.length}`;
-            
-            const feedbackBox = document.getElementById('feedback-box');
-            feedbackBox.classList.add('hidden');
-
-            const nextBtn = document.getElementById('btn-next-card');
-            nextBtn.disabled = true;
-            nextBtn.className = "bg-slate-700 opacity-50 text-white font-bold py-2.5 px-5 rounded-xl transition-all text-xs border border-slate-600 cursor-not-allowed";
-
-            const optionsContainer = document.getElementById('response-select-container');
-            optionsContainer.innerHTML = '';
-            
-            card.options.forEach((optText, index) => {
-                const btn = document.createElement('button');
-                btn.id = `game-opt-btn-${index}`;
-                btn.className = "bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold p-3.5 rounded-xl border border-slate-700 hover:border-teal-400 text-xs text-left transition-all flex items-center justify-between";
-                btn.innerHTML = `<span>${optText}</span> <span class="text-xs opacity-60">👉</span>`;
-                btn.onclick = () => evaluateChoice(index);
-                optionsContainer.appendChild(btn);
-            });
-
-            playCabinChime();
-            setTimeout(() => {
-                speakText(card.command);
-            }, 550);
-        }
-
-        function speakCurrentPhrase() {
-            speakText(cards[currentIndex].command);
-        }
-
-        function evaluateChoice(selectedIndex) {
-            const card = cards[currentIndex];
-            const isCorrect = (selectedIndex === card.correctIndex);
-            const btn = document.getElementById(`game-opt-btn-${selectedIndex}`);
-            const feedbackBox = document.getElementById('feedback-box');
-
-            if (isCorrect) {
-                btn.className = "card-option-correct text-slate-100 font-semibold p-3.5 rounded-xl border text-xs text-left transition-all flex items-center justify-between";
-                playSuccessSound();
-                
-                if (!gameHasMadeMistakeOnCurrentCard) {
-                    gameFirstAttemptsCorrect++;
-                    score += 10;
-                    document.getElementById('score-display').innerText = `${score} pts`;
-                }
-
-                feedbackBox.classList.remove('hidden');
-                feedbackBox.className = "mt-3 p-3 rounded-xl border text-xs font-bold text-center bg-teal-950/80 border-teal-500 text-teal-200";
-                feedbackBox.innerHTML = `✅ <b>Splendid!</b> — ${card.explanation}`;
-
-                // Enable Next button
-                const nextBtn = document.getElementById('btn-next-card');
-                nextBtn.disabled = false;
-                nextBtn.className = "btn-teal text-white font-bold py-2.5 px-5 rounded-xl transition-all text-xs flex items-center space-x-2 border border-teal-400 cursor-pointer shadow-lg";
-
-                // Disable all option buttons once correct answer is found
-                card.options.forEach((_, idx) => {
-                    const optBtn = document.getElementById(`game-opt-btn-${idx}`);
-                    if (optBtn) optBtn.onclick = null;
-                });
-
-            } else {
-                gameHasMadeMistakeOnCurrentCard = true;
-                btn.className = "card-option-wrong text-slate-100 font-semibold p-3.5 rounded-xl border text-xs text-left transition-all flex items-center justify-between";
-                playErrorSound();
-
-                feedbackBox.classList.remove('hidden');
-                feedbackBox.className = "mt-3 p-3 rounded-xl border text-xs font-bold text-center bg-rose-950/80 border-rose-500 text-rose-200";
-                feedbackBox.innerHTML = `❌ <b>Not quite!</b> Try selecting another option.`;
-            }
-        }
-
-        function nextCard() {
-            if (currentIndex < cards.length - 1) {
-                currentIndex++;
-                renderCard();
-            } else {
-                // Finish Game Round!
-                showGameCongratsScreen();
-            }
-        }
-
-        function showGameCongratsScreen() {
-            document.getElementById('game-main-panel').classList.add('hidden');
-            const congratsPanel = document.getElementById('game-congrats-panel');
-            congratsPanel.classList.remove('hidden');
-
-            document.getElementById('game-congrats-score').innerText = `${gameFirstAttemptsCorrect} / ${cards.length}`;
-            
-            let praise = "Splendid Effort!";
-            if (gameFirstAttemptsCorrect === cards.length) {
-                praise = "Flawless First-Class Service! 🏆";
-            } else if (gameFirstAttemptsCorrect >= cards.length / 2) {
-                praise = "Jolly Good Job! Almost Perfect! ✈️";
-            }
-            document.getElementById('game-congrats-title').innerText = praise;
-
-            triggerConfetti();
-        }
-
-        function restartGameRound() {
-            currentIndex = 0;
-            gameFirstAttemptsCorrect = 0;
-            document.getElementById('game-congrats-panel').classList.add('hidden');
-            document.getElementById('game-main-panel').classList.remove('hidden');
-            renderCard();
-        }
-
-        function addCustomCommand() {
-            const input = document.getElementById('custom-command-input');
-            const isTrick = document.getElementById('custom-trick-checkbox').checked;
-            
-            if (input.value.trim() !== '') {
-                const prefix = isTrick ? '' : 'Cabin Crew says: ';
-                const fullCommand = `${prefix}${input.value.trim()}`;
-                
-                cards.push({
-                    command: fullCommand,
-                    options: isTrick 
-                        ? ["Perform Action", "Do Nothing! (TRICK CARD)", "Ask for water", "Say thank you"]
-                        : ["Perform Action / 'Yes, certainly!'", "Do Nothing", "Open window", "Unbuckle"],
-                    correctIndex: isTrick ? 1 : 0,
-                    isTrick: isTrick,
-                    explanation: isTrick ? "TRICK CARD! Prefix 'Cabin Crew says' was omitted." : "Valid instruction!"
-                });
-
-                input.value = '';
-                document.getElementById('custom-trick-checkbox').checked = false;
-                alert('New British English card added to deck!');
-            }
-        }
-
-        // ================= SECTION 2 CODE (MENU GAME) =================
-        function renderMenuQuestion() {
-            const q = menuQuestions[currentMenuIndex];
-            menuHasMadeMistake = false;
-
-            document.getElementById('menu-prompt-text').innerText = `"${q.prompt}"`;
-            document.getElementById('menu-counter').innerText = `${currentMenuIndex + 1} / ${menuQuestions.length}`;
-            
-            const feedbackBox = document.getElementById('menu-feedback-box');
-            feedbackBox.classList.add('hidden');
-
-            const nextBtn = document.getElementById('btn-next-menu');
-            nextBtn.disabled = true;
-            nextBtn.className = "bg-slate-700 opacity-50 text-white font-bold py-2.5 px-5 rounded-xl transition-all text-xs border border-slate-600 cursor-not-allowed";
-
-            const grid = document.getElementById('menu-items-grid');
-            grid.innerHTML = '';
-
-            menuItemsList.forEach(item => {
-                const card = document.createElement('button');
-                card.id = `menu-card-${item.id}`;
-                card.className = "bg-slate-900/80 border border-slate-800 hover:border-teal-400 p-4 rounded-2xl flex flex-col items-center justify-center transition-all group";
-                card.innerHTML = `
-                    <span class="text-4xl mb-2 group-hover:scale-110 transition-transform">${item.icon}</span>
-                    <span class="text-xs font-bold text-slate-200 text-center">${item.name}</span>
-                `;
-                card.onclick = () => evaluateMenuChoice(item.id);
-                grid.appendChild(card);
-            });
-
-            playCabinChime();
-            setTimeout(() => {
-                speakText(q.audioText);
-            }, 500);
-        }
-
-        function playCurrentMenuAudio() {
-            speakText(menuQuestions[currentMenuIndex].audioText);
-        }
-
-        function evaluateMenuChoice(selectedId) {
-            const q = menuQuestions[currentMenuIndex];
-            const feedbackBox = document.getElementById('menu-feedback-box');
-
-            // Handle Question Mark (Pardon? / Repeat) option
-            if (selectedId === 'question') {
-                playCurrentMenuAudio();
-                feedbackBox.classList.remove('hidden');
-                feedbackBox.className = "max-w-2xl mx-auto mt-4 p-3 rounded-xl border text-xs font-bold text-center bg-amber-950/80 border-amber-500 text-amber-200";
-                feedbackBox.innerHTML = `❓ <b>"Pardon? Could you repeat that, please?"</b> — Replaying announcement!`;
-                return;
-            }
-
-            const isCorrect = Array.isArray(q.correctItemId) 
-                ? q.correctItemId.includes(selectedId) 
-                : (selectedId === q.correctItemId);
-            const card = document.getElementById(`menu-card-${selectedId}`);
-
-            if (isCorrect) {
-                card.className = "card-option-correct border p-4 rounded-2xl flex flex-col items-center justify-center transition-all";
-                playSuccessSound();
-
-                if (!menuHasMadeMistake) {
-                    menuFirstAttemptsCorrect++;
-                    score += 10;
-                    document.getElementById('score-display').innerText = `${score} pts`;
-                }
-
-                feedbackBox.classList.remove('hidden');
-                feedbackBox.className = "max-w-2xl mx-auto mt-4 p-3 rounded-xl border text-xs font-bold text-center bg-teal-950/80 border-teal-500 text-teal-200";
-                feedbackBox.innerHTML = `✅ <b>Marvellous choice!</b> — ${q.explanation}`;
-
-                const nextBtn = document.getElementById('btn-next-menu');
-                nextBtn.disabled = false;
-                nextBtn.className = "btn-teal text-white font-bold py-2.5 px-5 rounded-xl transition-all text-xs cursor-pointer shadow-lg";
-
-                // Disable grid cards
-                menuItemsList.forEach(item => {
-                    const c = document.getElementById(`menu-card-${item.id}`);
-                    if (c) c.onclick = null;
-                });
-
-            } else {
-                menuHasMadeMistake = true;
-                card.className = "card-option-wrong border p-4 rounded-2xl flex flex-col items-center justify-center transition-all";
-                playErrorSound();
-
-                feedbackBox.classList.remove('hidden');
-                feedbackBox.className = "max-w-2xl mx-auto mt-4 p-3 rounded-xl border text-xs font-bold text-center bg-rose-950/80 border-rose-500 text-rose-200";
-                feedbackBox.innerHTML = `❌ <b>Not quite!</b> Look at the options and try another card.`;
-            }
-        }
-
-        function nextMenuQuestion() {
-            if (currentMenuIndex < menuQuestions.length - 1) {
-                currentMenuIndex++;
-                renderMenuQuestion();
-            } else {
-                showMenuCongratsScreen();
-            }
-        }
-
-        function showMenuCongratsScreen() {
-            document.getElementById('menu-main-panel').classList.add('hidden');
-            const congratsPanel = document.getElementById('menu-congrats-panel');
-            congratsPanel.classList.remove('hidden');
-
-            const pct = Math.round((menuFirstAttemptsCorrect / menuQuestions.length) * 100);
-            document.getElementById('menu-congrats-score').innerText = `${pct}% Accuracy (${menuFirstAttemptsCorrect}/${menuQuestions.length})`;
-            
-            triggerConfetti();
-        }
-
-        function restartMenuRound() {
-            currentMenuIndex = 0;
-            menuFirstAttemptsCorrect = 0;
-            document.getElementById('menu-congrats-panel').classList.add('hidden');
-            document.getElementById('menu-main-panel').classList.remove('hidden');
-            renderMenuQuestion();
-        }
-
-        // ================= SECTION 3 CODE (VOCAB & QUIZ) =================
-        function speakCabinPart(partName, sentence) {
-            speakText(`${partName}. ${sentence}`);
-        }
-
-        function renderVocabQuizQuestion() {
-            const q = vocabQuizQuestions[currentVocabQuizIndex];
-            vocabHasMadeMistake = false;
-
-            document.getElementById('vocab-quiz-counter').innerText = `${currentVocabQuizIndex + 1} / ${vocabQuizQuestions.length}`;
-            
-            const feedbackBox = document.getElementById('vocab-feedback-box');
-            feedbackBox.classList.add('hidden');
-
-            const nextBtn = document.getElementById('btn-next-vocab-quiz');
-            nextBtn.disabled = true;
-            nextBtn.className = "bg-slate-700 opacity-50 text-white font-bold py-2 px-4 rounded-xl text-xs border border-slate-600 cursor-not-allowed";
-
-            const container = document.getElementById('vocab-quiz-options');
-            container.innerHTML = '';
-
-            q.options.forEach((optText, index) => {
-                const btn = document.createElement('button');
-                btn.id = `vocab-quiz-btn-${index}`;
-                btn.className = "bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold p-3 rounded-xl border border-slate-700 text-xs text-left transition-all flex items-center justify-between";
-                btn.innerHTML = `<span>${optText}</span> <span class="text-xs opacity-60">👉</span>`;
-                btn.onclick = () => evaluateVocabQuizChoice(index);
-                container.appendChild(btn);
-            });
-
-            playVocabQuizVoice();
-        }
-
-        function playVocabQuizVoice() {
-            speakText(vocabQuizQuestions[currentVocabQuizIndex].audioText);
-        }
-
-        function evaluateVocabQuizChoice(selectedIndex) {
-            const q = vocabQuizQuestions[currentVocabQuizIndex];
-            const isCorrect = (selectedIndex === q.correctIndex);
-            const btn = document.getElementById(`vocab-quiz-btn-${selectedIndex}`);
-            const feedbackBox = document.getElementById('vocab-feedback-box');
-
-            if (isCorrect) {
-                btn.className = "card-option-correct text-slate-100 font-semibold p-3 rounded-xl border text-xs text-left transition-all flex items-center justify-between";
-                playSuccessSound();
-
-                if (!vocabHasMadeMistake) {
-                    vocabFirstAttemptsCorrect++;
-                    score += 10;
-                    document.getElementById('score-display').innerText = `${score} pts`;
-                }
-
-                feedbackBox.classList.remove('hidden');
-                feedbackBox.className = "mt-4 p-3 rounded-xl border text-xs font-bold text-center bg-teal-950/80 border-teal-500 text-teal-200";
-                feedbackBox.innerHTML = `✅ <b>Top Marks!</b> — ${q.explanation}`;
-
-                const nextBtn = document.getElementById('btn-next-vocab-quiz');
-                nextBtn.disabled = false;
-                nextBtn.className = "btn-teal text-white font-bold py-2 px-4 rounded-xl text-xs cursor-pointer shadow-lg";
-
-                q.options.forEach((_, idx) => {
-                    const b = document.getElementById(`vocab-quiz-btn-${idx}`);
-                    if (b) b.onclick = null;
-                });
-
-            } else {
-                vocabHasMadeMistake = true;
-                btn.className = "card-option-wrong text-slate-100 font-semibold p-3 rounded-xl border text-xs text-left transition-all flex items-center justify-between";
-                playErrorSound();
-
-                feedbackBox.classList.remove('hidden');
-                feedbackBox.className = "mt-4 p-3 rounded-xl border text-xs font-bold text-center bg-rose-950/80 border-rose-500 text-rose-200";
-                feedbackBox.innerHTML = `❌ <b>Incorrect announcement option!</b> Try clicking another choice.`;
-            }
-        }
-
-        function nextVocabQuizQuestion() {
-            if (currentVocabQuizIndex < vocabQuizQuestions.length - 1) {
-                currentVocabQuizIndex++;
-                renderVocabQuizQuestion();
-            } else {
-                showVocabCongratsScreen();
-            }
-        }
-
-        function showVocabCongratsScreen() {
-            document.getElementById('vocab-main-panel').classList.add('hidden');
-            const congratsPanel = document.getElementById('vocab-congrats-panel');
-            congratsPanel.classList.remove('hidden');
-
-            const pct = Math.round((vocabFirstAttemptsCorrect / vocabQuizQuestions.length) * 100);
-            document.getElementById('vocab-congrats-score').innerText = `${pct}% First-Try Accuracy`;
-
-            triggerConfetti();
-        }
-
-        function restartVocabRound() {
-            currentVocabQuizIndex = 0;
-            vocabFirstAttemptsCorrect = 0;
-            document.getElementById('vocab-congrats-panel').classList.add('hidden');
-            document.getElementById('vocab-main-panel').classList.remove('hidden');
-            renderVocabQuizQuestion();
-        }
-
-        // Tab Navigation Switcher
-        function switchTab(tab) {
-            document.getElementById('section-game').classList.add('hidden');
-            document.getElementById('section-menu').classList.add('hidden');
-            document.getElementById('section-seat').classList.add('hidden');
-
-            document.getElementById('nav-game').className = "px-3.5 py-2 text-xs font-bold text-slate-300 hover:text-white rounded-lg transition-all";
-            document.getElementById('nav-menu').className = "px-3.5 py-2 text-xs font-bold text-slate-300 hover:text-white rounded-lg transition-all";
-            document.getElementById('nav-seat').className = "px-3.5 py-2 text-xs font-bold text-slate-300 hover:text-white rounded-lg transition-all";
-
-            if (tab === 'game') {
-                document.getElementById('section-game').classList.remove('hidden');
-                document.getElementById('nav-game').className = "px-3.5 py-2 text-xs font-bold rounded-lg transition-all bg-teal-500 text-slate-950 shadow";
-            } else if (tab === 'menu') {
-                document.getElementById('section-menu').classList.remove('hidden');
-                document.getElementById('nav-menu').className = "px-3.5 py-2 text-xs font-bold rounded-lg transition-all bg-teal-500 text-slate-950 shadow";
-                if (currentMenuIndex === 0) renderMenuQuestion();
-            } else if (tab === 'seat') {
-                document.getElementById('section-seat').classList.remove('hidden');
-                document.getElementById('nav-seat').className = "px-3.5 py-2 text-xs font-bold rounded-lg transition-all bg-teal-500 text-slate-950 shadow";
-                if (currentVocabQuizIndex === 0) renderVocabQuizQuestion();
-            }
-        }
-
-        // Initialize application on load
         window.onload = function() {
-            renderCard();
+            renderSimulator();
         };
     </script>
 </body>
