@@ -217,7 +217,7 @@
                 </div>
             </section>
 
-            <!-- Adapted Reading Text Content (Continuous prose without highlights) -->
+            <!-- Adapted Reading Text Content -->
             <section class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-custom space-y-6">
                 <div class="flex flex-wrap items-center justify-between border-b border-slate-100 pb-4 gap-3">
                     <h3 class="font-heading text-xl font-bold text-brand-navy flex items-center gap-2">
@@ -366,6 +366,483 @@
     <div id="dict-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 relative animate-fadeIn">
             <button onclick="toggleDictionaryModal()" class="absolute top-4 right-4 w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-600 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center text-lg font-bold">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <div>
+                    <h3 class="font-heading text-xl font-bold text-brand-navy">Cambridge Dictionary Companion</h3>
+                    <p class="text-xs text-slate-500">Look up any word from The Little Prince text</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex gap-2">
+                    <input type="text" id="dict-search-input" placeholder="Type a word (e.g. tame, essential, bond)..." class="flex-grow px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-brand-teal outline-none">
+                    <button onclick="searchCambridge()" class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-magnifying-glass"></i> Look Up
+                    </button>
+                </div>
+
+                <div id="dict-quick-results" class="p-4 bg-sky-50 rounded-2xl border border-sky-100 text-xs space-y-2">
+                    <p class="font-bold text-sky-900">Recommended Key Vocabulary from Text:</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="quickSearchWord('tame')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">tame</button>
+                        <button onclick="quickSearchWord('bond')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">bond</button>
+                        <button onclick="quickSearchWord('unique')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">unique</button>
+                        <button onclick="quickSearchWord('essential')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">essential</button>
+                        <button onclick="quickSearchWord('invisible')" class="bg-white px-2.5 py-1 rounded-lg border border-sky-200 hover:border-sky-400 font-medium">invisible</button>
+                    </div>
+                </div>
+
+                <div class="text-center pt-2">
+                    <a id="dict-external-link" href="https://dictionary.cambridge.org/dictionary/" target="_blank" rel="noopener noreferrer" class="text-xs text-sky-700 hover:underline font-bold inline-flex items-center gap-1">
+                        <span>Open directly on Cambridge Dictionary Website</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full border border-brand-teal/40 overflow-hidden bg-white p-0.5 flex-shrink-0">
+                    <img src="ChatGPT Image 13 sept 2026, 05_24_14 p.m._4.png" 
+                         alt="Merry Mery English Logo" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/00A896/ffffff?text=MM';"
+                         class="w-full h-full object-cover rounded-full">
+                </div>
+                <span>© Merry Mery English — Level A2 Literature Series</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-400">
+                <span class="text-slate-600 font-semibold"><i class="fa-solid fa-headphones text-sky-500"></i> Interactive Speech Audio</span>
+                <span>•</span>
+                <span class="text-slate-600 font-semibold"><i class="fa-solid fa-lightbulb text-amber-500"></i> Guided Reading Hints</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // State tracking
+        const state = {
+            totalQuestions: 6,
+            completedQuestions: new Set(),
+            answeredCorrectly: {}, // qId -> boolean
+            correctAnswersText: {}, // qId -> string
+            attempts: {}, // questionId -> total clicks
+            firstTryCorrect: 0
+        };
+
+        // Complete 6 Questions Dataset
+        const quizQuestions = [
+            {
+                id: 'q1',
+                num: 1,
+                question: "Why did the fox say he couldn't play with the Little Prince at first?",
+                options: [
+                    { key: 'A', text: "Because he was too tired and hungry.", correct: false, explanation: "Incorrect. The fox didn't mention tiredness or hunger." },
+                    { key: 'B', text: "Because he was not tamed yet.", correct: true, explanation: "Spot on! The fox explained: 'I cannot play with you. I am not tamed.'" },
+                    { key: 'C', text: "Because he didn't like little boys.", correct: false, explanation: "Incorrect. The fox said he just didn't know the prince yet." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Check paragraph 2 where the fox answers the prince."
+            },
+            {
+                id: 'q2',
+                num: 2,
+                question: "According to the fox, what does the word \"tamed\" mean?",
+                options: [
+                    { key: 'A', text: "To train an animal to do tricks.", correct: false, explanation: "Incorrect. That is a circus definition, not the fox's definition!" },
+                    { key: 'B', text: "To build a strong connection or bond with someone.", correct: true, explanation: "Brilliant! The fox states: 'It means to create bonds.'" },
+                    { key: 'C', text: "To capture an animal in the desert.", correct: false, explanation: "Incorrect. Taming is about friendship, not capturing." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Check paragraph 4 where the fox explains: \"It means to...\""
+            },
+            {
+                id: 'q3',
+                num: 3,
+                question: "What happens if two individuals tame each other?",
+                options: [
+                    { key: 'A', text: "They will become necessary to each other and special.", correct: true, explanation: "Exactly right! 'We will need each other. You will be unique in the world to me.'" },
+                    { key: 'B', text: "They will forget about all other animals and people.", correct: false, explanation: "Incorrect. They become unique, but don't forget others." },
+                    { key: 'C', text: "They will stay together in the desert forever.", correct: false, explanation: "Incorrect. The story doesn't say they must stay in the desert." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Check paragraph 4: \"But if you tame me, we will...\""
+            },
+            {
+                id: 'q4',
+                num: 4,
+                question: "When the fox explained the meaning of \"tamed\", who did the prince remember?",
+                options: [
+                    { key: 'A', text: "A king from another planet.", correct: false, explanation: "Incorrect. The king did not tame him." },
+                    { key: 'B', text: "His wild fox in the desert.", correct: false, explanation: "Incorrect. He was talking to the fox right then!" },
+                    { key: 'C', text: "His rose on his home planet.", correct: true, explanation: "Splendid! The prince realized softly: 'I think a flower tamed me.'" },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Look at paragraph 5 where the prince mentions his rose."
+            },
+            {
+                id: 'q5',
+                num: 5,
+                question: "What is the fox's main secret?",
+                options: [
+                    { key: 'A', text: "Roses are the most beautiful flowers in the universe.", correct: false, explanation: "Incorrect. The secret is deeper than just visual beauty." },
+                    { key: 'B', text: "You can only see truly important things with your heart, not your eyes.", correct: true, explanation: "Beautiful! 'What is essential is invisible to the eyes.'" },
+                    { key: 'C', text: "Wild animals never want to make friends.", correct: false, explanation: "Incorrect. The fox wants to make friends once tamed." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Look at paragraph 6 where the fox reveals his secret."
+            },
+            {
+                id: 'q6',
+                num: 6,
+                question: "Why was the Little Prince's rose so important to him?",
+                options: [
+                    { key: 'A', text: "Because of all the time he spent taking care of her.", correct: true, explanation: "Wonderful! 'It is the time you spent with your rose that makes her so important.'" },
+                    { key: 'B', text: "Because she was the only flower on his planet.", correct: false, explanation: "Incorrect. The core reason given by the fox is the time and care invested." },
+                    { key: 'C', text: "Because she could speak and walk around.", correct: false, explanation: "Incorrect. Roses cannot walk around." },
+                    { key: 'D', text: "I don't know.", isIDontKnow: true }
+                ],
+                hint: "Check the final sentence of paragraph 6."
+            }
+        ];
+
+        // Key Vocabulary Dataset
+        const vocabularyList = [
+            { word: "tame", phonetic: "/teɪm/", definition: "To create bonds and make someone or something special to you.", example: "If you tame me, we will need each other." },
+            { word: "bond", phonetic: "/bɒnd/", definition: "A strong connection or emotional link between people or friends.", example: "The prince and the fox formed a special bond." },
+            { word: "unique", phonetic: "/juˈniːk/", definition: "Being the only one of its kind; special and unlike anything else.", example: "You will be unique in the world to me." },
+            { word: "essential", phonetic: "/ɪˈsenʃəl/", definition: "Extremely important or necessary.", example: "What is essential is invisible to the eye." },
+            { word: "invisible", phonetic: "/ɪnˈvɪzəbl/", definition: "Unable to be seen by the eye.", example: "True things are invisible; you see them with your heart." },
+            { word: "desert", phonetic: "/ˈdezət/", definition: "A large, dry area of land with very little water or plants.", example: "Once, the Little Prince met a wild fox in the desert." }
+        ];
+
+        // Initialize App on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+            renderVocabulary();
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('tab-active'));
+
+            document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabId}`).classList.add('tab-active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Quiz Questions dynamically
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            quizQuestions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50/70 border border-slate-200/80 rounded-2xl p-5 sm:p-6 transition-all';
+                card.id = `question-card-${q.id}`;
+
+                let optionsHtml = '';
+                q.options.forEach(opt => {
+                    optionsHtml += `
+                        <button onclick="handleAnswer('${q.id}', '${opt.key}', ${opt.correct || false}, ${opt.isIDontKnow || false})" 
+                                id="btn-${q.id}-${opt.key}"
+                                class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-white hover:border-brand-teal hover:bg-teal-50/40 text-xs sm:text-sm font-medium transition-all flex items-center justify-between group">
+                            <span class="flex items-center gap-3">
+                                <span class="w-6 h-6 rounded-lg bg-slate-100 group-hover:bg-brand-teal group-hover:text-white flex items-center justify-center font-bold text-xs transition-colors">${opt.key}</span>
+                                <span class="text-slate-700">${opt.text}</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-brand-teal text-xs"></i>
+                        </button>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-brand-navy text-white flex items-center justify-center font-bold text-xs">#${q.num}</span>
+                            <h3 class="font-heading font-bold text-brand-navy text-base sm:text-lg">${q.question}</h3>
+                        </div>
+                        <button onclick="speakText('${q.question.replace(/'/g, "\\'")}', this)" class="w-9 h-9 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-600 flex items-center justify-center text-sm transition-colors flex-shrink-0" title="Listen to question">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                    </div>
+
+                    <div class="space-y-2.5 mb-4">
+                        ${optionsHtml}
+                    </div>
+
+                    <div id="feedback-${q.id}" class="hidden p-3.5 rounded-xl text-xs font-medium mb-3"></div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-200/60 text-xs">
+                        <button onclick="toggleHint('${q.id}')" class="text-amber-600 hover:text-amber-700 font-bold inline-flex items-center gap-1">
+                            <i class="fa-solid fa-lightbulb"></i> <span id="hint-text-btn-${q.id}">Show Reading Hint</span>
+                        </button>
+                        <span id="status-badge-${q.id}" class="text-slate-400 font-semibold">Not answered</span>
+                    </div>
+
+                    <div id="hint-box-${q.id}" class="hidden mt-3 p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs">
+                        <i class="fa-solid fa-book-open text-amber-600 mr-1"></i> <strong>Hint:</strong> ${q.hint}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Handle Answer Selection
+        function handleAnswer(qId, selectedKey, isCorrect, isIDontKnow) {
+            const q = quizQuestions.find(item => item.id === qId);
+            
+            // Track attempts
+            if (!state.attempts[qId]) state.attempts[qId] = 0;
+            state.attempts[qId]++;
+
+            const isFirstAttempt = state.attempts[qId] === 1;
+
+            q.options.forEach(opt => {
+                const btn = document.getElementById(`btn-${qId}-${opt.key}`);
+                btn.disabled = true;
+                btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-100 text-slate-400 text-xs sm:text-sm font-medium flex items-center justify-between opacity-70 cursor-not-allowed";
+            });
+
+            const feedbackDiv = document.getElementById(`feedback-${qId}`);
+            feedbackDiv.classList.remove('hidden');
+            const statusBadge = document.getElementById(`status-badge-${qId}`);
+
+            if (isIDontKnow) {
+                // User clicked "I don't know"
+                const correctOpt = q.options.find(o => o.correct);
+                state.answeredCorrectly[qId] = false;
+
+                feedbackDiv.className = "p-3.5 rounded-xl text-xs font-medium mb-3 bg-amber-50 border border-amber-200 text-amber-900";
+                feedbackDiv.innerHTML = `<i class="fa-solid fa-circle-info mr-1"></i> <strong>No problem!</strong> The correct answer is <strong>Option ${correctOpt.key}:</strong> ${correctOpt.text}`;
+                
+                statusBadge.className = "text-amber-600 font-bold";
+                statusBadge.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> Reviewed Answer`;
+                
+                // Highlight correct option
+                const correctBtn = document.getElementById(`btn-${qId}-${correctOpt.key}`);
+                correctBtn.className = "w-full text-left p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 text-xs sm:text-sm font-bold flex items-center justify-between shadow-sm";
+
+            } else if (isCorrect) {
+                state.answeredCorrectly[qId] = true;
+                if (isFirstAttempt) {
+                    state.firstTryCorrect++;
+                }
+
+                const selectedOpt = q.options.find(o => o.key === selectedKey);
+                feedbackDiv.className = "p-3.5 rounded-xl text-xs font-medium mb-3 bg-emerald-50 border border-emerald-200 text-emerald-900";
+                feedbackDiv.innerHTML = `<i class="fa-solid fa-circle-check mr-1 text-emerald-600"></i> <strong>Correct!</strong> ${selectedOpt.explanation}`;
+
+                statusBadge.className = "text-emerald-600 font-bold";
+                statusBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> Correct Answer`;
+
+                const selectedBtn = document.getElementById(`btn-${qId}-${selectedKey}`);
+                selectedBtn.className = "w-full text-left p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 text-xs sm:text-sm font-bold flex items-center justify-between shadow-sm";
+
+                fireMiniConfetti();
+
+            } else {
+                state.answeredCorrectly[qId] = false;
+                const selectedOpt = q.options.find(o => o.key === selectedKey);
+                const correctOpt = q.options.find(o => o.correct);
+
+                feedbackDiv.className = "p-3.5 rounded-xl text-xs font-medium mb-3 bg-rose-50 border border-rose-200 text-rose-900";
+                feedbackDiv.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1 text-rose-600"></i> <strong>Not quite.</strong> ${selectedOpt.explanation} The correct answer is <strong>Option ${correctOpt.key}</strong>.`;
+
+                statusBadge.className = "text-rose-600 font-bold";
+                statusBadge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Incorrect`;
+
+                const selectedBtn = document.getElementById(`btn-${qId}-${selectedKey}`);
+                selectedBtn.className = "w-full text-left p-3.5 rounded-xl border-2 border-rose-400 bg-rose-50 text-rose-900 text-xs sm:text-sm font-bold flex items-center justify-between shadow-sm";
+
+                const correctBtn = document.getElementById(`btn-${qId}-${correctOpt.key}`);
+                correctBtn.className = "w-full text-left p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 text-xs sm:text-sm font-bold flex items-center justify-between shadow-sm";
+
+                // Add shake animation to card
+                document.getElementById(`question-card-${qId}`).classList.add('shake');
+                setTimeout(() => document.getElementById(`question-card-${qId}`).classList.remove('shake'), 400);
+            }
+
+            state.completedQuestions.add(qId);
+            updateProgress();
+        }
+
+        // Update Progress Counters
+        function updateProgress() {
+            const completedCount = state.completedQuestions.size;
+            document.getElementById('progress-text').innerText = `${completedCount} / 6 Questions`;
+            document.getElementById('badge-quiz').innerText = `${completedCount}/6`;
+            document.getElementById('quiz-completion-badge').innerText = `${completedCount} / 6 Completed`;
+
+            if (completedCount === 6) {
+                const successBanner = document.getElementById('quiz-success-banner');
+                successBanner.classList.remove('hidden');
+                
+                const percentage = Math.round((state.firstTryCorrect / 6) * 100);
+                document.getElementById('quiz-success-msg').innerText = `You completed all 6 questions with a first-try accuracy of ${percentage}% (${state.firstTryCorrect}/6 correct on first attempt).`;
+
+                // Update final summary view
+                document.getElementById('final-score').innerText = `${percentage}%`;
+                document.getElementById('final-first-try').innerText = `${state.firstTryCorrect} / 6`;
+                
+                let totalClicks = 0;
+                Object.values(state.attempts).forEach(val => totalClicks += val);
+                document.getElementById('final-attempts').innerText = totalClicks;
+
+                const feedbackBox = document.getElementById('perseverance-feedback');
+                if (percentage >= 80) {
+                    feedbackBox.className = "p-4 rounded-2xl text-sm max-w-xl mx-auto mb-6 bg-emerald-50 text-emerald-900 border border-emerald-200 font-medium";
+                    feedbackBox.innerHTML = "🌟 <strong>Outstanding Achievement!</strong> You have a deep understanding of *The Little Prince* A2 reading passage!";
+                } else {
+                    feedbackBox.className = "p-4 rounded-2xl text-sm max-w-xl mx-auto mb-6 bg-amber-50 text-amber-900 border border-amber-200 font-medium";
+                    feedbackBox.innerHTML = "💡 <strong>Great Effort!</strong> Review the Key Vocabulary tab or restart the quiz to practice for an even higher score!";
+                }
+
+                fireConfetti();
+            }
+        }
+
+        // Toggle Hint Box
+        function toggleHint(qId) {
+            const box = document.getElementById(`hint-box-${qId}`);
+            const btnText = document.getElementById(`hint-text-btn-${qId}`);
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                btnText.innerText = "Hide Reading Hint";
+            } else {
+                box.classList.add('hidden');
+                btnText.innerText = "Show Reading Hint";
+            }
+        }
+
+        // Render Key Vocabulary Cards
+        function renderVocabulary() {
+            const grid = document.getElementById('vocab-cards-grid');
+            grid.innerHTML = '';
+
+            vocabularyList.forEach(vocab => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 border border-slate-200/80 rounded-2xl p-5 animated-card flex flex-col justify-between space-y-3';
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <h4 class="font-heading text-lg font-bold text-brand-navy">${vocab.word}</h4>
+                            <span class="text-xs font-mono font-bold text-brand-teal bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100">${vocab.phonetic}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-2">${vocab.definition}</p>
+                        <blockquote class="text-[11px] italic text-slate-500 bg-white p-2.5 rounded-xl border border-slate-100">
+                            "${vocab.example}"
+                        </blockquote>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-200/60">
+                        <button onclick="speakText('${vocab.word}', this)" class="text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-volume-high text-sky-500"></i> Pronunciation
+                        </button>
+                        <button onclick="quickSearchWord('${vocab.word}')" class="text-xs text-slate-500 hover:text-brand-teal font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-magnifying-glass text-[10px]"></i> Dictionary
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Speech Synthesis Helper
+        function speakText(text, btnElement) {
+            if (!('speechSynthesis' in window)) {
+                alert("Speech synthesis is not supported in your browser.");
+                return;
+            }
+
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+
+            if (btnElement) {
+                const originalHtml = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                utterance.onend = () => { btnElement.innerHTML = originalHtml; };
+                utterance.onerror = () => { btnElement.innerHTML = originalHtml; };
+            }
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Read Full Passage Audio
+        function readFullText(btnElement) {
+            const passageText = "Once, the Little Prince met a wild fox in the desert. Come and play with me, said the prince. I am very sad. I cannot play with you, said the fox. I am not tamed. What does tamed mean? asked the prince. It means to create bonds, explained the fox. To me, you are just a little boy like a hundred thousand other little boys. And I do not need you. But if you tame me, we will need each other. You will be unique in the world to me. The prince thought about his rose on his small planet. I think a flower tamed me, he said softly. The fox smiled and said: Here is my secret. It is very simple: You can only see well with the heart. What is essential is invisible to the eyes. It is the time you spent with your rose that makes her so important.";
+            speakText(passageText, btnElement);
+        }
+
+        // Cambridge Dictionary Modal Controls
+        function toggleDictionaryModal() {
+            const modal = document.getElementById('dict-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function quickSearchWord(word) {
+            document.getElementById('dict-search-input').value = word;
+            searchCambridge();
+            const modal = document.getElementById('dict-modal');
+            if (modal.classList.contains('hidden')) {
+                toggleDictionaryModal();
+            }
+        }
+
+        function searchCambridge() {
+            const query = document.getElementById('dict-search-input').value.trim().toLowerCase();
+            if (!query) return;
+            const searchUrl = `https://dictionary.cambridge.org/dictionary/english/${encodeURIComponent(query)}`;
+            document.getElementById('dict-external-link').href = searchUrl;
+            window.open(searchUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        // Reset Quiz
+        function resetAllQuiz() {
+            state.completedQuestions.clear();
+            state.answeredCorrectly = {};
+            state.attempts = {};
+            state.firstTryCorrect = 0;
+            document.getElementById('quiz-success-banner').classList.add('hidden');
+            renderQuiz();
+            updateProgress();
+            switchTab('quiz');
+        }
+
+        // Confetti Effects
+        function fireConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        function fireMiniConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 40,
+                    spread: 50,
+                    origin: { y: 0.8 }
+                });
+            }
+        }
+    </script>
+</body>
+</html>            <button onclick="toggleDictionaryModal()" class="absolute top-4 right-4 w-8 h-8 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-600 flex items-center justify-center">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
