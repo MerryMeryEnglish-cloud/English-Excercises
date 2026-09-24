@@ -151,7 +151,7 @@
                     </div>
 
                     <div class="my-2 text-center flex flex-col items-center">
-                        <div id="avatar-container" class="relative mb-4 cursor-pointer group" onclick="speakCurrentPhrase(true)">
+                        <div id="avatar-container" class="relative mb-4 cursor-pointer group" onclick="speakCurrentPhrase()">
                             <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-slate-800 border-4 border-teal-400/60 p-2 shadow-xl flex items-center justify-center relative transition-transform transform group-hover:scale-105 pulse-teal">
                                 <span class="text-5xl md:text-6xl" id="avatar-emoji">👨‍✈️</span>
                                 <div class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-950 p-2 rounded-full shadow-lg">
@@ -236,13 +236,13 @@
                         🇬🇧 Interactive Menu Challenge
                     </span>
                     <h2 class="text-2xl md:text-3xl font-extrabold mt-3 text-white font-brand">In-Flight Catering & Beverage Game</h2>
-                    <p class="text-xs md:text-sm text-slate-300 mt-2">Listen to the order, then select the matching image card below!</p>
+                    <p class="text-xs md:text-sm text-slate-300 mt-2">Click the box to listen to the order, then select the matching image card below!</p>
                 </div>
 
                 <div class="bg-slate-900/90 border border-teal-500/40 rounded-2xl p-5 max-w-2xl mx-auto text-center mb-6 shadow-xl relative cursor-pointer" onclick="playCurrentMenuAudio()">
                     <div class="flex items-center justify-between text-xs text-teal-400 font-bold mb-2">
                         <span>Question <span id="menu-counter">1 / 5</span></span>
-                        <span class="text-amber-300 hover:underline">🔊 Click to Replay Audio</span>
+                        <span class="text-amber-300 hover:underline">🔊 Click to Listen Audio</span>
                     </div>
                     <p id="menu-prompt-text" class="text-lg md:text-xl font-bold text-white">"Would you like a cup of English tea with milk?"</p>
                 </div>
@@ -270,7 +270,7 @@
             </div>
         </section>
 
-        <!-- ================= SECTION 3: AIRPORT GATE & FLIGHT INFO (NEW EXERCISE) ================= -->
+        <!-- ================= SECTION 3: AIRPORT GATE & FLIGHT INFO ================= -->
         <section id="section-airport" class="hidden space-y-6">
             <div id="airport-main-panel" class="glass-card rounded-3xl p-6 md:p-8">
                 <div class="text-center max-w-2xl mx-auto mb-6">
@@ -278,7 +278,7 @@
                         🇬🇧 Real Airport Situations[cite: 1]
                     </span>
                     <h2 class="text-2xl md:text-3xl font-extrabold mt-3 text-white font-brand">Gate & Flight Information Challenge</h2>
-                    <p class="text-xs md:text-sm text-slate-300 mt-2">Listen to the passenger or gate agent inquiry and select the correct British English response[cite: 1].</p>
+                    <p class="text-xs md:text-sm text-slate-300 mt-2">Click the box to listen to the inquiry and select the correct British English response[cite: 1].</p>
                 </div>
 
                 <div class="bg-slate-900/90 border border-teal-500/40 rounded-2xl p-5 max-w-2xl mx-auto text-center mb-6 shadow-xl relative cursor-pointer" onclick="playCurrentAirportAudio()">
@@ -320,7 +320,7 @@
                         🇬🇧 Visual Vocabulary & Listening Challenge
                     </span>
                     <h2 class="text-2xl md:text-3xl font-extrabold mt-3 text-white font-brand">Airplane Cabin Vocabulary</h2>
-                    <p class="text-xs md:text-sm text-slate-300 mt-2">Review key cabin terms, then complete the Cabin Listening Quiz!</p>
+                    <p class="text-xs md:text-sm text-slate-300 mt-2">Click any card to listen, then complete the Cabin Listening Quiz!</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
@@ -344,7 +344,7 @@
                 <div class="bg-slate-900/90 border border-amber-500/40 rounded-2xl p-6 relative">
                     <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
                         <h3 class="text-base font-bold text-amber-300 flex items-center gap-2"><span>🎧</span> Cabin Listening Challenge</h3>
-                        <span id="vocab-quiz-counter" class="text-xs font-bold text-teal-400">1 / 3</span>
+                        <span id="vocab-quiz-counter" class="text-xs font-bold text-teal-400">1 / 2</span>
                     </div>
 
                     <div class="text-center mb-4 cursor-pointer" onclick="playVocabQuizVoice()">
@@ -374,7 +374,6 @@
     </main>
 
     <script>
-        // ================= DATA & VOICE ASSIGNMENT =================
         let cards = [
             {
                 command: "Cabin Crew says: Please fasten your seatbelt securely!",
@@ -431,7 +430,6 @@
         let menuFirstAttemptsCorrect = 0;
         let menuHasMadeMistake = false;
 
-        // Airport Gate & Flight Info Data[cite: 1]
         let airportQuestions = [
             {
                 prompt: "Excuse me, what time does flight AA123 to Miami depart?",[cite: 1]
@@ -478,7 +476,6 @@
         let vocabFirstAttemptsCorrect = 0;
         let vocabHasMadeMistake = false;
 
-        // --- BRITISH MALE & FEMALE VOICE ROTATION ---
         let voiceToggle = false;
 
         function playCabinChime() {
@@ -511,7 +508,6 @@
                 utterance.rate = 0.88;
 
                 const voices = window.speechSynthesis.getVoices();
-                // Alternate between British Male and Female voices if available
                 voiceToggle = !voiceToggle;
                 const ukVoices = voices.filter(v => v.lang === 'en-GB' || v.name.includes('UK') || v.name.includes('British'));
                 
@@ -534,7 +530,7 @@
             }
         }
 
-        // ================= SECTION 1 CODE =================
+        // ================= SECTION 1 =================
         function renderCard() {
             const card = cards[currentIndex];
             gameHasMadeMistakeOnCurrentCard = false;
@@ -560,11 +556,11 @@
                 btn.onclick = () => evaluateChoice(index);
                 optionsContainer.appendChild(btn);
             });
-            // NOT auto-spoken on render. User clicks avatar to listen.
+            // ZERO AUTO-SPEECH HERE
         }
 
-        function speakCurrentPhrase(isManual = true) {
-            if (isManual) playCabinChime();
+        function speakCurrentPhrase() {
+            playCabinChime();
             speakText(cards[currentIndex].command);
         }
 
@@ -613,8 +609,7 @@
                 renderCard();
             } else {
                 document.getElementById('game-main-panel').classList.add('hidden');
-                const congrats = document.getElementById('game-congrats-panel');
-                congrats.classList.remove('hidden');
+                document.getElementById('game-congrats-panel').classList.remove('hidden');
                 document.getElementById('game-congrats-score').innerText = `${gameFirstAttemptsCorrect} / ${cards.length}`;
                 triggerConfetti();
             }
@@ -628,7 +623,7 @@
             renderCard();
         }
 
-        // ================= SECTION 2 CODE (MENU) =================
+        // ================= SECTION 2 =================
         function renderMenuQuestion() {
             const q = menuQuestions[currentMenuIndex];
             menuHasMadeMistake = false;
@@ -653,6 +648,7 @@
                 card.onclick = () => evaluateMenuChoice(item.id);
                 grid.appendChild(card);
             });
+            // ZERO AUTO-SPEECH HERE
         }
 
         function playCurrentMenuAudio() {
@@ -712,7 +708,7 @@
             renderMenuQuestion();
         }
 
-        // ================= SECTION 3 CODE (AIRPORT GATE & INFO)[cite: 1] =================
+        // ================= SECTION 3 =================
         function renderAirportQuestion() {
             const q = airportQuestions[currentAirportIndex];
             airportHasMadeMistake = false;
@@ -737,6 +733,7 @@
                 btn.onclick = () => evaluateAirportChoice(index);
                 container.appendChild(btn);
             });
+            // ZERO AUTO-SPEECH HERE
         }
 
         function playCurrentAirportAudio() {
@@ -796,7 +793,7 @@
             renderAirportQuestion();
         }
 
-        // ================= SECTION 4 CODE (VOCAB QUIZ) =================
+        // ================= SECTION 4 =================
         function speakCabinPart(partName, sentence) {
             playCabinChime();
             speakText(`${partName}. ${sentence}`);
@@ -825,6 +822,7 @@
                 btn.onclick = () => evaluateVocabQuizChoice(index);
                 container.appendChild(btn);
             });
+            // ZERO AUTO-SPEECH HERE
         }
 
         function playVocabQuizVoice() {
@@ -894,6 +892,7 @@
             document.getElementById(`section-${tab}`).classList.remove('hidden');
             document.getElementById(`nav-${tab}`).className = "px-3.5 py-2 text-xs font-bold rounded-lg transition-all bg-teal-500 text-slate-950 shadow";
 
+            // Renders contents quietly without speaking
             if (tab === 'menu' && currentMenuIndex === 0) renderMenuQuestion();
             if (tab === 'airport' && currentAirportIndex === 0) renderAirportQuestion();
             if (tab === 'seat' && currentVocabQuizIndex === 0) renderVocabQuizQuestion();
