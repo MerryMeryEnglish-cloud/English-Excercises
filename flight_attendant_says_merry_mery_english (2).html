@@ -1,36 +1,302 @@
-// Estado para llevar el control de la rotación de voces
-let voiceGenderToggle = false; // false = femenina, true = masculina
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Mery English - Aviation Simulator</title>
+    <style>
+        :root {
+            --primary-color: #0b2545;
+            --secondary-color: #134074;
+            --accent-color: #8da9c4;
+            --bg-color: #eeef2;
+            --card-bg: #ffffff;
+            --text-color: #1d2d44;
+        }
 
-function playBritishAudio(textElementId) {
-    const text = document.getElementById(textElementId).innerText;
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Obtener las voces disponibles en el navegador
-    const voices = window.speechSynthesis.getVoices();
-    
-    // Filtrar voces en inglés británico (en-GB)
-    const britishVoices = voices.filter(voice => voice.lang === 'en-GB' || voice.lang === 'en_GB');
-    
-    if (britishVoices.length > 0) {
-        // Intentar separar por género aproximando por nombre (ej. 'Female', 'Male', 'George', 'Hazel', etc.)
-        const femaleVoices = britishVoices.filter(v => v.name.toLowerCase().includes('female') || v.name.includes('Hazel') || v.name.includes('Libby') || v.name.includes('Maisie'));
-        const maleVoices = britishVoices.filter(v => v.name.toLowerCase().includes('male') || v.name.includes('George') || v.name.includes('Ryan') || v.name.includes('Oliver'));
-        
-        let selectedVoice;
-        if (!voiceGenderToggle && femaleVoices.length > 0) {
-            selectedVoice = femaleVoices[Math.floor(Math.random() * femaleVoices.length)];
-            voiceGenderToggle = true; // Siguiente turno será masculina
-        } else if (voiceGenderToggle && maleVoices.length > 0) {
-            selectedVoice = maleVoices[Math.floor(Math.random() * maleVoices.length)];
-            voiceGenderToggle = false; // Siguiente turno será femenina
-        } else {
-            // Si no se detectan etiquetas claras, toma cualquiera de la lista británica en rotación
-            selectedVoice = britishVoices[Math.floor(Math.random() * britishVoices.length)];
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+
+        /* Sistema de Solapas (Tabs) */
+        .tabs {
+            display: flex;
+            background-color: var(--secondary-color);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .tab-btn.active {
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+            border-top: 3px solid var(--accent-color);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Elementos interactivos */
+        .interactive-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .interactive-card p {
+            margin: 0;
+            font-size: 1.05rem;
+        }
+
+        button.audio-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button.audio-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .avatar-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .info-badge {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Merry Mery English</h1>
+        <p>British Aviation Simulation Training</p>
+    </header>
+
+    <!-- Barra de Solapas -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'tab1')">Cabin Crew Says</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab2')">In-Flight Tea & Menu</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab3')">Airport Gate & Info</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab4')">Listening Quiz</button>
+    </div>
+
+    <!-- Solapa 1: Cabin Crew Says -->
+    <div id="tab1" class="tab-content active">
+        <div class="avatar-container">
+            <div class="avatar" onclick="playBritishAudio('speech-avatar')" title="Haz clic para escuchar al instructor">👩‍✈️</div>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Haz clic en el avatar para reproducir la orden</p>
+        </div>
+        <div class="interactive-card">
+            <p id="speech-avatar">Cabin crew, please secure the emergency exits and cross-check slides.</p>
+            <button class="audio-btn" onclick="playBritishAudio('speech-avatar')">🔊 Listen</button>
+        </div>
+    </div>
+
+    <!-- Solapa 2: In-Flight Tea & Menu -->
+    <div id="tab2" class="tab-content">
+        <span class="info-badge">Catering Service</span>
+        <div class="interactive-card">
+            <p id="menu-1">Would you fancy a cup of English breakfast tea with milk, or sparkling water?</p>
+            <button class="audio-btn" onclick="playBritishAudio('menu-1')">🔊 Listen</button>
+        </div>
+        <div class="interactive-card">
+            <p id="menu-2">For lunch today, we are serving traditional shepherd's pie or a vegetarian option.</p>
+            <button class="audio-btn" onclick="playBritishAudio('menu-2')">🔊 Listen</button>
+        </div>
+    </div>
+
+    <!-- Solapa 3: Airport Gate & Info -->
+    <div id="tab3" class="tab-content">
+        <span class="info-badge">Flight Announcements</span>
+        <div class="interactive-card">
+            <p id="flight-aa">Final boarding call for American Airlines flight AA123 to Miami, please proceed to Gate 22.</p>
+            <button class="audio-btn" onclick="playBritishAudio('flight-aa')">🔊 Listen</button>
+        </div>
+        <div class="interactive-card">
+            <p id="flight-ba">British Airways flight BA456 to London Heathrow is now boarding at Gate 14.</p>
+            <button class="audio-btn" onclick="playBritishAudio('flight-ba')">🔊 Listen</button>
+        </div>
+    </div>
+
+    <!-- Solapa 4: Cabin Vocabulary & Listening Quiz -->
+    <div id="tab4" class="tab-content">
+        <span class="info-badge">Listening Practice</span>
+        <div class="interactive-card">
+            <p id="quiz-text">Please stow your luggage securely in the overhead locker before departure.</p>
+            <button class="audio-btn" onclick="playBritishAudio('quiz-text')">🔊 Play Audio</button>
+        </div>
+        <p style="font-size: 0.9rem; color: #555;">Escucha el audio y repite la frase imitando la pronunciación británica.</p>
+    </div>
+</div>
+
+<script>
+    // Control de rotación de voces (Alterna entre femenino y masculino)
+    let voiceGenderToggle = false; 
+
+    function openTab(evt, tabName) {
+        const tabContents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabContents.length; i++) {
+            tabContents[i].classList.remove("active");
         }
         
-        utterance.voice = selectedVoice;
+        const tabBtns = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < tabBtns.length; i++) {
+            tabBtns[i].classList.remove("active");
+        }
+        
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
     }
-    
-    utterance.rate = 0.95; // Velocidad ligeramente pausada ideal para práctica de aviación/listening
-    window.speechSynthesis.speak(utterance);
-}
+
+    function playBritishAudio(textElementId) {
+        const textElement = document.getElementById(textElementId);
+        if (!textElement) return;
+        
+        const text = textElement.innerText;
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Obtener voces del navegador
+        const voices = window.speechSynthesis.getVoices();
+        
+        // Filtrar estrictamente voces en inglés británico (en-GB)
+        const britishVoices = voices.filter(voice => voice.lang === 'en-GB' || voice.lang === 'en_GB');
+        
+        if (britishVoices.length > 0) {
+            // Clasificación por nombre para separar géneros de forma aproximada
+            const femaleVoices = britishVoices.filter(v => 
+                v.name.toLowerCase().includes('female') || 
+                v.name.includes('Hazel') || 
+                v.name.includes('Libby') || 
+                v.name.includes('Maisie') ||
+                v.name.includes('Stephanie')
+            );
+            
+            const maleVoices = britishVoices.filter(v => 
+                v.name.toLowerCase().includes('male') || 
+                v.name.includes('George') || 
+                v.name.includes('Ryan') || 
+                v.name.includes('Oliver') ||
+                v.name.includes('Arthur')
+            );
+            
+            let selectedVoice;
+            if (!voiceGenderToggle && femaleVoices.length > 0) {
+                selectedVoice = femaleVoices[Math.floor(Math.random() * femaleVoices.length)];
+                voiceGenderToggle = true; // El siguiente turno será masculino
+            } else if (voiceGenderToggle && maleVoices.length > 0) {
+                selectedVoice = maleVoices[Math.floor(Math.random() * maleVoices.length)];
+                voiceGenderToggle = false; // El siguiente turno será femenino
+            } else {
+                // Si no hay etiquetas claras, rota libremente entre las voces británicas disponibles
+                selectedVoice = britishVoices[Math.floor(Math.random() * britishVoices.length)];
+            }
+            
+            utterance.voice = selectedVoice;
+        }
+        
+        utterance.rate = 0.95; // Velocidad ligeramente pausada, ideal para estudiantes de aviación
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Precargar voces en algunos navegadores que lo requieren al iniciar
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
+    }
+</script>
+
+</body>
+</html>
